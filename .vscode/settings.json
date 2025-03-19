@@ -1,0 +1,19 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+
+  "eslint.enable": false,
+
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+
+  "vitest.rootConfig": "vitest.config.ts",
+
+  "todo.colors.comment": "#FFDD87",
+  "todo.colors.tags.background": ["#e54545", "#e59f45", "#e5d145", "#ae81ff"],
+  "todo.colors.tags.foreground": ["#000000", "#000000", "#000000", "#000000"],
+  "todo.tags.names": ["must", "should", "could", "won't"],
+  "todo.file.name": "note/TODO",
+  "todo.file.defaultContent": "Task:\n  ☐ All\n  ☐ Analysis Requirements(Statement, Goal ...)\n\n  ☐ Dev Strategy(Tests, Scenarios, Priorities)\n\n  ☐ Work List: @must @could @should @won't\n\n  ☐ Retrospect\n\n  ☐ Additions\n"
+}
