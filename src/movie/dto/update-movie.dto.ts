@@ -1,6 +1,6 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class UpdateMovieDto { 
+export class UpdateMovieDto {
   @IsNotEmpty()
   @IsOptional()
   @IsString()

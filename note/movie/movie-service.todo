@@ -1,0 +1,17 @@
+MovieService Dev:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    transfer business logic from controller to service
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    Hard coding
+
+  ☐ Work List: @must @could @should @won't
+    ✔ getManyMovies @done(25-03-20 08:39)
+    ✔ getMovieById @done(25-03-20 08:39)
+    ✔ createMovie @done(25-03-20 08:39)
+    ✔ updateMovie @done(25-03-20 08:39)
+    ✔ deleteMovie @done(25-03-20 08:39)
+  ☐ Retrospect
+
+  ☐ Additions

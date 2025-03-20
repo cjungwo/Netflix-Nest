@@ -1,0 +1,16 @@
+ClassTransformer:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    transform class
+    serialization and deserialization
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    find cannot expose to user
+    make exclude and expose schema in entity
+
+  ☐ Work List: @must @could @should @won't
+    ✔ movie entity @done(25-03-20 09:06)
+    
+  ☐ Retrospect
+
+  ☐ Additions

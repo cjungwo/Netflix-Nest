@@ -1,0 +1,23 @@
+MovieAPI Dev:
+  ☐ All
+
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Movie CRUD
+    - GET /movie -> read movies
+    - GET /movie/:id -> read movie by id
+    - POST /movie -> create movie
+    - PATCH /movie/:id -> update movie by id
+    - DELETE /movie/:id -> delete movie by id
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    Hard coding
+
+  ☐ Work List: @must @could @should @won't
+    ✔ GET /movie -> read movies @done(25-03-20 08:39)
+    ✔ GET /movie/:id -> read movie by id @done(25-03-20 08:39)
+    ✔ POST /movie -> create movie @done(25-03-20 08:39)
+    ✔ PATCH /movie/:id -> update movie by id @done(25-03-20 08:39)
+    ✔ DELETE /movie/:id -> delete movie by id @done(25-03-20 08:39)
+  ☐ Retrospect
+
+  ☐ Additions

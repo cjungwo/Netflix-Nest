@@ -1,0 +1,20 @@
+ClassValidation Dev:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Add class validation in dtos
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    1. find validation error using postman test
+    2. add class validation in dtos
+
+  ☐ Work List: @must @could @should @won't
+    ✔ create-movie-dto @done(25-03-20 08:50)
+      - IsNotEmpty
+      - IsString
+    ✔ update-movie-dto @done(25-03-20 08:50)
+      - IsNotEmpty
+      - IsOptional
+      - IsString
+
+  ☐ Retrospect
+
+  ☐ Additions

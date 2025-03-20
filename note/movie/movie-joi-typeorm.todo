@@ -1,0 +1,14 @@
+Joi&TypeORM:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    add .env and environment variable
+    add TypeOrmModule in AppModule for using global layer
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    connect db using typeorm, joi and config service 
+
+  ☐ Work List: @must @could @should @won't
+    ✔ connect db @done(25-03-21 08:54)
+  ☐ Retrospect
+
+  ☐ Additions

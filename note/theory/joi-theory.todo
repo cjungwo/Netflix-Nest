@@ -1,0 +1,20 @@
+Joi:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    validator based by schema
+    type safe
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    Don't use Joi in class. Just learn how to work
+    
+    Use Joi for environment variable(.env)
+      - DB Setting
+      - PORT Number
+      - API Key
+      - env partition
+
+  ☐ Work List: @must @could @should @won't
+
+  ☐ Retrospect
+
+  ☐ Additions

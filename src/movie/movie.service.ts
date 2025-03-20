@@ -1,35 +1,33 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
-
-export interface Movie {
-  id: number;
-  title: string;
-  genre: string;
-}
+import { Movie } from './entity/movie.entity';
 
 @Injectable()
 export class MovieService {
-  private movies: Movie[] = [
-    {
-      id: 1,
-      title: 'Harry Potter',
-      genre: "Fantasy",
-    },
-    {
-      id: 2,
-      title: 'Harry Potter2',
-      genre: "Fantasy",
-    },
-  ];
+  private movies: Movie[] = [];
   private idCounter = 3;
+
+  constructor() {
+    const movie1 = new Movie();
+    movie1.id = 1;
+    movie1.title = 'Harry Potter';
+    movie1.genre = 'fantasy';
+
+    const movie2 = new Movie();
+    movie2.id = 2;
+    movie2.title = 'Harry Potter2';
+    movie2.genre = 'action';
+
+    this.movies.push(movie1, movie2);
+  }
 
   getManyMovies(title?: string) {
     if (!title) {
       return this.movies;
     }
 
-    return this.movies.filter(m => m.title.startsWith(title));
+    return this.movies.filter((m) => m.title.startsWith(title));
   }
 
   getMovieById(id: number) {
@@ -45,7 +43,7 @@ export class MovieService {
   createMovie(dto: CreateMovieDto) {
     const newMovie: Movie = {
       id: this.idCounter++,
-      ...dto
+      ...dto,
     };
 
     this.movies.push(newMovie);
@@ -61,7 +59,7 @@ export class MovieService {
     }
 
     Object.assign(movie, dto);
-    
+
     return movie;
   }
 
@@ -73,8 +71,7 @@ export class MovieService {
     }
 
     this.movies.splice(movieIndex, 1);
-    
+
     return id;
   }
-
 }

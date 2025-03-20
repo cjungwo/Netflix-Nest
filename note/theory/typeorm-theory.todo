@@ -1,0 +1,22 @@
+TypeORM:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    DataSource - provide info about db
+      - type, host, port, username, password, database, entities ...
+    Entity
+      - @Entity
+      - @Column
+        - type, name, nullable, update, select, default, unique, comment, enum, array, ...
+      - @PrimaryGeneratedColumn
+      - @CreateDateColumn
+      - @UpdateDateColumn
+      - @DeleteDateColumn
+      - @VersionColumn
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+
+  ☐ Retrospect
+
+  ☐ Additions

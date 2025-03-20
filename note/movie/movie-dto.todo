@@ -1,0 +1,16 @@
+MovieDto Dev:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Make MovieDtos to create and update
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    1. find params of endpoint to need to convert dto
+    2. convert params to dto
+
+  ☐ Work List: @must @could @should @won't
+    ✔ create-movie-dto @done(25-03-20 08:44)
+    ✔ update-movie-dto @done(25-03-20 08:44)
+
+  ☐ Retrospect
+
+  ☐ Additions
