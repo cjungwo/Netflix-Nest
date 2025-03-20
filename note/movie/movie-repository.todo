@@ -1,0 +1,61 @@
+Movie Repository:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    CRUD Query, data management
+
+    Create: 
+      create() - only create object not save
+      save() - save to db
+      upsert() - update + insert, working on one transaction
+    Delete:
+      delete() - usually delete by id, if you want, findOptionsWhere
+      softDelete() - it can restore
+      restore() - restore only softDeleted items
+    Update: 
+      update() - 1st param is search field, 2nd param is change field
+      increment()
+      decrement()
+    Find:
+      find() - find all
+      findAndCount()
+      findOne() - only one(first) or null
+        FindOptions: 
+          FindOneOptions - select, where, relations, order, cache,
+          FindManyOptions - select, where, relations, order, cache, skip, take
+      exists()
+      preload() - find item and overlap new data
+      query() - 
+    ETC: 
+      count()
+      sum()
+      average()
+      minimum()
+      maximum()
+      query()
+
+    Operator:
+      Equal()
+      Not()
+      LessThan()
+      LessThanOrEqual()
+      MoreThan()
+      MoreThanOrEqual()
+      Between()
+      Like() - case strict
+      ILike() - ignore case
+      In()
+      ArrayContains() - perfectly same
+      ArrayContainedBy() - included
+      ArrayOverlap() - included one or more
+      IsNull()
+      Or()
+      And()
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    
+  ☐ Work List: @must @could @should @won't
+    ✔ movie repository @done(25-03-21 09:59)
+
+  ☐ Retrospect
+
+  ☐ Additions
