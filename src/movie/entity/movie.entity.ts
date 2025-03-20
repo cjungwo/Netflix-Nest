@@ -1,17 +1,29 @@
-import { Exclude, Expose } from 'class-transformer';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  VersionColumn,
+} from 'typeorm';
 
-@Exclude()
+@Entity()
 export class Movie {
-  @Expose()
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Expose()
+  @Column()
   title: string;
 
+  @Column()
   genre: string;
 
-  // @Expose()
-  // get description() {
-  //   return 'Enjoy~';
-  // }
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @VersionColumn()
+  version: number;
 }

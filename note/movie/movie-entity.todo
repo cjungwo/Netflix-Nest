@@ -1,11 +1,11 @@
-Task:
+TypeORM Entity:
   ☐ All
   ☐ Analysis Requirements(Statement, Goal ...)
-
+    make movie class to entity
   ☐ Dev Strategy(Tests, Scenarios, Priorities)
 
   ☐ Work List: @must @could @should @won't
-
+    ✔ movie entity @done(25-03-21 09:11)
   ☐ Retrospect
 
   ☐ Additions
