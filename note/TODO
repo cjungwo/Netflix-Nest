@@ -15,10 +15,11 @@ Relationship:
       ✔ Update movie service(CRUD) @done(25-03-24 12:52)
       ✔ cascade @done(25-03-25 08:26)
 
-    ☐ Many to One(One to Many): Director
-      ☐ To make director entity
-      ☐ To get relationship between movie and director
-      ☐ To update movie service
+    ✔ Many to One(One to Many): Director @done(25-03-25 10:33)
+      ✔ To make director entity @done(25-03-25 08:33)
+      ✔ To get relationship between movie and director @done(25-03-25 08:36)
+      ✔ To update movie service @done(25-03-25 09:18)
+      ✔ cascade & nullable @done(25-03-25 10:33)
 
     ☐ Many to Many: Genre
       ☐ To make genre entity

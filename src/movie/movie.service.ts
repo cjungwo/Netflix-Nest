@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Director } from 'src/director/entity/director.entity';
 import { ILike, Repository } from 'typeorm';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
@@ -13,12 +14,16 @@ export class MovieService {
     private readonly movieRepository: Repository<Movie>,
     @InjectRepository(MovieDetail)
     private readonly movieDetailRepository: Repository<MovieDetail>,
+    @InjectRepository(Director)
+    private readonly directorRepository: Repository<Director>,
   ) {}
 
-  async getManyMovies(title?: string) {
+  async findAll(title?: string) {
     if (!title) {
       return [
-        await this.movieRepository.find(),
+        await this.movieRepository.find({
+          relations: ['director'],
+        }),
         await this.movieRepository.count(),
       ];
     }
@@ -27,36 +32,48 @@ export class MovieService {
       where: {
         title: ILike(`%${title}%`),
       },
+      relations: ['director'],
       order: {
         id: 'ASC',
       },
     });
   }
 
-  async getMovieById(id: number) {
+  async findOne(id: number) {
     const movie = await this.movieRepository.findOne({
       where: {
         id,
       },
-      relations: ['detail'],
+      relations: ['detail', 'director'],
     });
 
     return movie;
   }
 
-  async createMovie(dto: CreateMovieDto) {
+  async create(dto: CreateMovieDto) {
+    const director = await this.directorRepository.findOne({
+      where: {
+        id: dto.directorId,
+      },
+    });
+
+    if (!director) {
+      throw new NotFoundException('This is unexisted ID of Director');
+    }
+
     const movie = await this.movieRepository.save({
       title: dto.title,
       genre: dto.genre,
       detail: {
         detail: dto.detail,
       },
+      director,
     });
 
     return movie;
   }
 
-  async updateMovie(id: number, dto: UpdateMovieDto) {
+  async update(id: number, dto: UpdateMovieDto) {
     const movie = await this.movieRepository.findOne({
       where: {
         id,
@@ -68,9 +85,30 @@ export class MovieService {
       throw new NotFoundException('This is unexisted Movie ID');
     }
 
-    const { detail, ...movieRest } = dto;
+    const { detail, directorId, ...movieRest } = dto;
 
-    await this.movieRepository.update({ id }, movieRest);
+    let newDirector;
+
+    if (directorId) {
+      const director = await this.directorRepository.findOne({
+        where: {
+          id: directorId,
+        },
+      });
+
+      if (!director) {
+        throw new NotFoundException('This is unexisted ID of Director');
+      }
+
+      newDirector = director;
+    }
+
+    const movieUpdateFields = {
+      ...movieRest,
+      ...(newDirector && { director: newDirector }),
+    };
+
+    await this.movieRepository.update({ id }, movieUpdateFields);
 
     if (detail) {
       await this.movieDetailRepository.update(
@@ -87,13 +125,13 @@ export class MovieService {
       where: {
         id,
       },
-      relations: ['detail'],
+      relations: ['detail', 'director'],
     });
 
     return newMovie;
   }
 
-  async deleteMovie(id: number) {
+  async remove(id: number) {
     const movie = await this.movieRepository.findOne({
       where: {
         id,

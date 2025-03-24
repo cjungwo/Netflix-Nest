@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
+import { DirectorModule } from './director/director.module';
+import { Director } from './director/entity/director.entity';
 import { MovieDetail } from './movie/entity/movie-detail.entity';
 import { Movie } from './movie/entity/movie.entity';
 import { MovieModule } from './movie/movie.module';
@@ -29,11 +31,12 @@ import { MovieModule } from './movie/movie.module';
         username: configService.get('DB_USER'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        entities: [Movie, MovieDetail],
+        entities: [Movie, MovieDetail, Director],
         synchronize: true,
       }),
     }),
     MovieModule,
+    DirectorModule,
   ],
 })
 export class AppModule {}
