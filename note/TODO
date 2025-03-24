@@ -1,0 +1,30 @@
+Relationship:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    One to One: MovieDetail
+    Many to One: Director 
+    One to Many 
+    Many to Many: Genre
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+    ✔ One to One: MovieDetail @done(25-03-24 12:52)
+      ✔ To make movieDetail entity @done(25-03-24 12:52)
+      ✔ To get relationship between movie and movieDetail @done(25-03-24 12:52)
+      ✔ Update movie service(CRUD) @done(25-03-24 12:52)
+      ✔ cascade @done(25-03-25 08:26)
+
+    ☐ Many to One(One to Many): Director
+      ☐ To make director entity
+      ☐ To get relationship between movie and director
+      ☐ To update movie service
+
+    ☐ Many to Many: Genre
+      ☐ To make genre entity
+      ☐ To get relationship between movie and genre
+      ☐ To update movie service
+
+  ☐ Retrospect
+
+  ☐ Additions

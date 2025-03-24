@@ -10,4 +10,9 @@ export class UpdateMovieDto {
   @IsOptional()
   @IsString()
   genre?: string;
+
+  @IsNotEmpty()
+  @IsOptional()
+  @IsString()
+  detail?: string;
 }

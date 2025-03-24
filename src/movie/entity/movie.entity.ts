@@ -1,46 +1,15 @@
+import { BaseTable } from 'src/common/entity/base-table.entity';
 import {
   Column,
-  CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
-  VersionColumn,
 } from 'typeorm';
-
-export class BaseEntity {
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @VersionColumn()
-  version: number;
-}
-
-// @Entity()
-// @TableInheritance({
-//   column: {
-//     type: 'varchar',
-//     name: 'type',
-//   },
-// })
-// export class Content extends BaseEntity {
-//   @PrimaryGeneratedColumn()
-//   id: number;
-
-//   @Column()
-//   title: string;
-
-//   @Column()
-//   genre: string;
-// }
-
-// movie / series -> Content
-// runtime / seriesCount
+import { MovieDetail } from './movie-detail.entity';
 
 @Entity()
-export class Movie extends BaseEntity {
+export class Movie extends BaseTable {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -50,13 +19,9 @@ export class Movie extends BaseEntity {
   @Column()
   genre: string;
 
-  // Embedded
-  // @Column(() => BaseEntity)
-  // base: BaseEntity;
+  @OneToOne(() => MovieDetail, (movieDetail) => movieDetail.id, {
+    cascade: true,
+  })
+  @JoinColumn()
+  detail: MovieDetail;
 }
-
-// @ChildEntity()
-// export class Series extends Content {
-//   @Column()
-//   seriesCount: number;
-// }
