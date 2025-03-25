@@ -1,4 +1,4 @@
-Relationship:
+Relationships:
   ☐ All
   ☐ Analysis Requirements(Statement, Goal ...)
     One to One: MovieDetail
@@ -21,10 +21,10 @@ Relationship:
       ✔ To update movie service @done(25-03-25 09:18)
       ✔ cascade & nullable @done(25-03-25 10:33)
 
-    ☐ Many to Many: Genre
-      ☐ To make genre entity
-      ☐ To get relationship between movie and genre
-      ☐ To update movie service
+    ✔ Many to Many: Genre @done(25-03-25 11:29)
+      ✔ To make genre entity @done(25-03-25 10:51)
+      ✔ To get relationship between movie and genre @done(25-03-25 10:51)
+      ✔ To update movie & genre service @done(25-03-25 11:29)
 
   ☐ Retrospect
 

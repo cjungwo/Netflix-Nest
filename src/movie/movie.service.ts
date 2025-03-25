@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Director } from 'src/director/entity/director.entity';
-import { ILike, Repository } from 'typeorm';
+import { Genre } from 'src/genre/entity/genre.entity';
+import { ILike, In, Repository } from 'typeorm';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { MovieDetail } from './entity/movie-detail.entity';
@@ -16,13 +17,15 @@ export class MovieService {
     private readonly movieDetailRepository: Repository<MovieDetail>,
     @InjectRepository(Director)
     private readonly directorRepository: Repository<Director>,
+    @InjectRepository(Genre)
+    private readonly genreRepository: Repository<Genre>,
   ) {}
 
   async findAll(title?: string) {
     if (!title) {
       return [
         await this.movieRepository.find({
-          relations: ['director'],
+          relations: ['director', 'genres'],
         }),
         await this.movieRepository.count(),
       ];
@@ -32,7 +35,7 @@ export class MovieService {
       where: {
         title: ILike(`%${title}%`),
       },
-      relations: ['director'],
+      relations: ['director', 'genres'],
       order: {
         id: 'ASC',
       },
@@ -44,7 +47,7 @@ export class MovieService {
       where: {
         id,
       },
-      relations: ['detail', 'director'],
+      relations: ['detail', 'director', 'genres'],
     });
 
     return movie;
@@ -61,13 +64,25 @@ export class MovieService {
       throw new NotFoundException('This is unexisted ID of Director');
     }
 
+    const genres = await this.genreRepository.find({
+      where: {
+        id: In(dto.genreIds),
+      },
+    });
+
+    if (genres.length !== dto.genreIds.length) {
+      throw new NotFoundException(
+        `This is unexisted IDs of Genre -> ${genres.map((genre) => genre.id).join(',')}`,
+      );
+    }
+
     const movie = await this.movieRepository.save({
       title: dto.title,
-      genre: dto.genre,
       detail: {
         detail: dto.detail,
       },
       director,
+      genres,
     });
 
     return movie;
@@ -82,10 +97,10 @@ export class MovieService {
     });
 
     if (!movie) {
-      throw new NotFoundException('This is unexisted Movie ID');
+      throw new NotFoundException('This is unexisted ID of Movie');
     }
 
-    const { detail, directorId, ...movieRest } = dto;
+    const { detail, directorId, genreIds, ...movieRest } = dto;
 
     let newDirector;
 
@@ -101,6 +116,24 @@ export class MovieService {
       }
 
       newDirector = director;
+    }
+
+    let newGenres;
+
+    if (genreIds) {
+      const genres = await this.genreRepository.find({
+        where: {
+          id: In(dto.genreIds),
+        },
+      });
+
+      if (genres.length !== dto.genreIds.length) {
+        throw new NotFoundException(
+          `This is unexisted IDs of Genre -> ${genres.map((genre) => genre.id).join(',')}`,
+        );
+      }
+
+      newGenres = genres;
     }
 
     const movieUpdateFields = {
@@ -128,7 +161,17 @@ export class MovieService {
       relations: ['detail', 'director'],
     });
 
-    return newMovie;
+    newMovie!.genres = newGenres;
+
+    await this.movieRepository.save(newMovie!);
+
+    // return this.movieRepository.preload(newMovie!);
+    return this.movieRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['detail', 'director', 'genres'],
+    });
   }
 
   async remove(id: number) {
