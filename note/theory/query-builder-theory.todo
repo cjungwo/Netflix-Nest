@@ -1,0 +1,43 @@
+Query Builder:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    simple query -> repository
+    dynamic query -> query builder
+
+    1. select: 
+      select table
+      - getOne()
+      - getMany()
+
+    2. insert:
+      insert data to table
+    
+    3. update:
+      update data
+    
+    4. delete:
+      delete data
+
+    5. relations:
+      relation between tables
+
+    6. Functions:
+      - where()
+      - andWhere()
+      - orWhere()
+      - orderBy()
+      - addOrderBy()
+      - skip()
+      - take()
+      - join() -> innerJoinAndSelect(), leftJoinAndSelect(), rightJoinAndSelect()
+      - aggregation -> COUNT()
+
+    7. Subquery:
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+
+  ☐ Retrospect
+
+  ☐ Additions
