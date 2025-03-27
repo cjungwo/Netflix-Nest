@@ -1,0 +1,18 @@
+Query Builder:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    movie service change repository to query builder
+  
+    create and save are easy to use repository
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+    ✔ findAll @done(25-03-28 08:42)
+    ✔ findOne @done(25-03-28 08:42)
+    ✔ create @done(25-03-28 08:42)
+    ✔ update @done(25-03-28 08:42)
+    ✔ delete @done(25-03-28 08:42)
+  ☐ Retrospect
+
+  ☐ Additions
