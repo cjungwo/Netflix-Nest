@@ -1,0 +1,23 @@
+Migrations:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Migration = write database update status to script for schema update and restore at controlled station.
+
+    Controlled Changes:
+      control changes
+    Reversible:
+      reverse migration
+    Versioning:
+      save history
+    Consistency:
+      setup same env
+    Complex Changes:
+      control complex changes
+    
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+
+  ☐ Retrospect
+
+  ☐ Additions
