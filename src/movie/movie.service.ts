@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Director } from 'src/director/entity/director.entity';
 import { Genre } from 'src/genre/entity/genre.entity';
-import { In, Repository } from 'typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { MovieDetail } from './entity/movie-detail.entity';
@@ -19,6 +19,7 @@ export class MovieService {
     private readonly directorRepository: Repository<Director>,
     @InjectRepository(Genre)
     private readonly genreRepository: Repository<Genre>,
+    private readonly dataSource: DataSource,
   ) {}
 
   async findAll(title?: string) {
@@ -32,25 +33,6 @@ export class MovieService {
     }
 
     return await qb.getManyAndCount();
-
-    // if (!title) {
-    //   return [
-    //     await this.movieRepository.find({
-    //       relations: ['director', 'genres'],
-    //     }),
-    //     await this.movieRepository.count(),
-    //   ];
-    // }
-
-    // return this.movieRepository.find({
-    //   where: {
-    //     title: ILike(`%${title}%`),
-    //   },
-    //   relations: ['director', 'genres'],
-    //   order: {
-    //     id: 'ASC',
-    //   },
-    // });
   }
 
   async findOne(id: number) {
@@ -67,75 +49,17 @@ export class MovieService {
     }
 
     return movie;
-    // const movie = await this.movieRepository.findOne({
-    //   where: {
-    //     id,
-    //   },
-    //   relations: ['detail', 'director', 'genres'],
-    // });
-
-    // if (!movie) {
-    //   throw new NotFoundException('This is unexisted Id of movie');
-    // }
-
-    // return movie;
   }
 
   async create(dto: CreateMovieDto) {
-    const director = await this.directorRepository.findOne({
-      where: {
-        id: dto.directorId,
-      },
-    });
+    const qr = this.dataSource.createQueryRunner();
+    await qr.connect();
+    await qr.startTransaction();
 
-    if (!director) {
-      throw new NotFoundException('This is unexisted ID of Director');
-    }
-
-    const genres = await this.genreRepository.find({
-      where: {
-        id: In(dto.genreIds),
-      },
-    });
-
-    if (genres.length !== dto.genreIds.length) {
-      throw new NotFoundException(
-        `This is unexisted IDs of Genre -> ${genres.map((genre) => genre.id).join(',')}`,
-      );
-    }
-
-    const movie = await this.movieRepository.save({
-      title: dto.title,
-      detail: {
-        detail: dto.detail,
-      },
-      director,
-      genres,
-    });
-
-    return movie;
-  }
-
-  async update(id: number, dto: UpdateMovieDto) {
-    const movie = await this.movieRepository.findOne({
-      where: {
-        id,
-      },
-      relations: ['detail', 'genres'],
-    });
-
-    if (!movie) {
-      throw new NotFoundException('This is unexisted ID of Movie');
-    }
-
-    const { detail, directorId, genreIds, ...movieRest } = dto;
-
-    let newDirector;
-
-    if (directorId) {
-      const director = await this.directorRepository.findOne({
+    try {
+      const director = await qr.manager.findOne(Director, {
         where: {
-          id: directorId,
+          id: dto.directorId,
         },
       });
 
@@ -143,13 +67,7 @@ export class MovieService {
         throw new NotFoundException('This is unexisted ID of Director');
       }
 
-      newDirector = director;
-    }
-
-    let newGenres;
-
-    if (genreIds) {
-      const genres = await this.genreRepository.find({
+      const genres = await qr.manager.find(Genre, {
         where: {
           id: In(dto.genreIds),
         },
@@ -161,86 +79,193 @@ export class MovieService {
         );
       }
 
-      newGenres = genres;
-    }
-
-    const movieUpdateFields = {
-      ...movieRest,
-      ...(newDirector && { director: newDirector }),
-    };
-
-    await this.movieRepository
-      .createQueryBuilder()
-      .update(Movie)
-      .set(movieUpdateFields)
-      .where('id = :id', { id })
-      .execute();
-
-    // await this.movieRepository.update({ id }, movieUpdateFields);
-
-    if (detail) {
-      await this.movieDetailRepository
+      const movieDetail = await qr.manager
         .createQueryBuilder()
-        .update(MovieDetail)
-        .set({
-          detail,
+        .insert()
+        .into(MovieDetail)
+        .values({
+          detail: dto.detail,
         })
-        .where('id = :id', { id })
         .execute();
-    }
 
-    if (newGenres) {
-      await this.movieRepository
+      const movieDetailId = movieDetail.identifiers[0].id;
+
+      const movie = await qr.manager
+        .createQueryBuilder()
+        .insert()
+        .into(Movie)
+        .values({
+          title: dto.title,
+          detail: {
+            detail: movieDetailId,
+          },
+          director,
+        })
+        .execute();
+
+      const movieId = movie.identifiers[0].id;
+
+      await qr.manager
         .createQueryBuilder()
         .relation(Movie, 'genres')
-        .of(id)
-        .addAndRemove(
-          newGenres.map((genre) => genre.id),
-          movie.genres.map((genre) => genre.id),
-        );
+        .of(movieId)
+        .add(genres.map((genre) => genre.id));
+
+      await qr.commitTransaction();
+
+      return await this.movieRepository.findOne({
+        where: {
+          id: movieId,
+        },
+        relations: ['detail', 'director', 'genres'],
+      });
+    } catch (err) {
+      await qr.rollbackTransaction();
+
+      throw err;
+    } finally {
+      await qr.release();
     }
+  }
 
-    // const newMovie = await this.movieRepository.findOne({
-    //   where: {
-    //     id,
-    //   },
-    //   relations: ['detail', 'director'],
-    // });
+  async update(id: number, dto: UpdateMovieDto) {
+    const qr = this.dataSource.createQueryRunner();
+    await qr.connect();
+    await qr.startTransaction();
 
-    // newMovie!.genres = newGenres;
+    try {
+      const movie = await qr.manager.findOne(Movie, {
+        where: {
+          id,
+        },
+        relations: ['detail', 'genres'],
+      });
 
-    // await this.movieRepository.save(newMovie!);
+      if (!movie) {
+        throw new NotFoundException('This is unexisted ID of Movie');
+      }
 
-    // return this.movieRepository.preload(newMovie!);
-    return this.movieRepository.findOne({
-      where: {
-        id,
-      },
-      relations: ['detail', 'director', 'genres'],
-    });
+      const { detail, directorId, genreIds, ...movieRest } = dto;
+
+      let newDirector;
+
+      if (directorId) {
+        const director = await qr.manager.findOne(Director, {
+          where: {
+            id: directorId,
+          },
+        });
+
+        if (!director) {
+          throw new NotFoundException('This is unexisted ID of Director');
+        }
+
+        newDirector = director;
+      }
+
+      let newGenres;
+
+      if (genreIds) {
+        const genres = await qr.manager.find(Genre, {
+          where: {
+            id: In(dto.genreIds),
+          },
+        });
+
+        if (genres.length !== dto.genreIds.length) {
+          throw new NotFoundException(
+            `This is unexisted IDs of Genre -> ${genres.map((genre) => genre.id).join(',')}`,
+          );
+        }
+
+        newGenres = genres;
+      }
+
+      const movieUpdateFields = {
+        ...movieRest,
+        ...(newDirector && { director: newDirector }),
+      };
+
+      await qr.manager
+        .createQueryBuilder()
+        .update(Movie)
+        .set(movieUpdateFields)
+        .where('id = :id', { id })
+        .execute();
+
+      if (detail) {
+        await qr.manager
+          .createQueryBuilder()
+          .update(MovieDetail)
+          .set({
+            detail,
+          })
+          .where('id = :id', { id })
+          .execute();
+      }
+
+      if (newGenres) {
+        await qr.manager
+          .createQueryBuilder()
+          .relation(Movie, 'genres')
+          .of(id)
+          .addAndRemove(
+            newGenres.map((genre) => genre.id),
+            movie.genres.map((genre) => genre.id),
+          );
+      }
+
+      await qr.commitTransaction();
+
+      return this.movieRepository.findOne({
+        where: {
+          id,
+        },
+        relations: ['detail', 'director', 'genres'],
+      });
+    } catch (err) {
+      await qr.rollbackTransaction();
+
+      throw err;
+    } finally {
+      await qr.release();
+    }
   }
 
   async remove(id: number) {
-    const movie = await this.movieRepository.findOne({
-      where: {
-        id,
-      },
-      relations: ['detail'],
-    });
+    const qr = this.dataSource.createQueryRunner();
+    await qr.connect();
+    await qr.startTransaction();
 
-    if (!movie) {
-      throw new NotFoundException('This is unexisted Movie ID');
+    try {
+      const movie = await qr.manager.findOne(Movie, {
+        where: {
+          id,
+        },
+        relations: ['detail'],
+      });
+
+      if (!movie) {
+        throw new NotFoundException('This is unexisted Movie ID');
+      }
+
+      await qr.manager
+        .createQueryBuilder()
+        .delete()
+        .where('id = :id', { id })
+        .execute();
+
+      await qr.manager.delete(MovieDetail, movie.detail.id);
+
+      qr.commitTransaction();
+
+      return id;
+    } catch (err) {
+      qr.rollbackTransaction();
+
+      throw err;
+    } finally {
+      qr.release();
     }
-
-    await this.movieRepository
-      .createQueryBuilder()
-      .delete()
-      .where('id = :id', { id })
-      .execute();
-
-    // await this.movieRepository.delete(id);
-    await this.movieDetailRepository.delete(movie.detail.id);
-
-    return id;
   }
 }
