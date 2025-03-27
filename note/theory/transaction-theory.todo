@@ -1,0 +1,41 @@
+Transaction:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Transaction = combine several operations to one action
+
+    Begin, Commit, RollBack
+
+    Lost Reads: 
+      - Two transaction read same data and update
+      - latest Transaction overlaps the result on previous transaction
+      - Result of Previous tranaction is lost
+      - Use Optimistic Lock strategy to solve this problem
+    
+    Dirty Reads: 
+      - Problem that Read data of other transactions before they commit yet.
+      - if rollback updated data to undo commit, other transactions which read data before rollback works with wrong data
+      - Use Read Committed Transaction to solve this problem
+
+    Non-repeatable Reads:
+      - if transaction update data when other transaction also read same data during be processed update, origin data cannot reimplement.
+      - Use Repeatable Read Transaction to solve this problem
+
+
+    Phantom Reads: 
+      - After transaction process filtering query to load several Row, other transaction created new data that matching condition of this query then return different result.
+      - Use Serializable Transaction to solve this problem
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+      Read Uncommitted - solve nothing
+      Read Committed - solve dirty read
+      Repeatable Read - solve dirty read, non-repeatable read
+      Serializable - solve dirty read, non-repeatable read, phantom read
+
+      *why don't we use serializable every transaction?
+      -  performance issue
+
+  ☐ Work List: @must @could @should @won't
+
+  ☐ Retrospect
+
+  ☐ Additions
