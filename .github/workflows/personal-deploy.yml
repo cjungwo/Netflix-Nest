@@ -22,13 +22,17 @@ jobs:
           ls
           pwd
 
-      - name: install Node
+      - name: Setup Node.js and pnpm
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: corepack enable && corepack prepare pnpm@latest --activate
 
       - name: install Library
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: mk .env
         run: |
@@ -40,24 +44,24 @@ jobs:
           cat .env
 
       - name: testing
-        run: npm test
+        run: pnpm test
 
-      - name: Connect to EC2
-        uses: appleboy/ssh-action@v1.0.3
-        env:
-          ENV: ${{ secrets.ENV }}
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          envs: ENV
-          script_stop: true
-          script: |
-            cd /home/ubuntu/netflix-nest
-            rm -rf .env
-            git pull origin main
-            echo "$ENV" > .env
-            npm i
-            npm run build
-            pm2 kill
-            pm2 start dist/main.js --name netflix-nest
+      # - name: Connect to EC2
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   env:
+      #     ENV: ${{ secrets.ENV }}
+      #   with:
+      #     host: ${{ secrets.EC2_HOST }}
+      #     username: ${{ secrets.USERNAME }}
+      #     key: ${{ secrets.EC2_PRIVATE_KEY }}
+      #     envs: ENV
+      #     script_stop: true
+      #     script: |
+      #       cd /home/ubuntu/netflix-nest
+      #       rm -rf .env
+      #       git pull origin main
+      #       echo "$ENV" > .env
+      #       pnpm i --prod
+      #       pnpm build
+      #       pm2 kill
+      #       pm2 start dist/main.js --name netflix-nest

@@ -9,7 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Test1
+      - name: Test1 | Before Checkout
         run: |
           ls
           pwd
@@ -17,61 +17,62 @@ jobs:
       - name: Load Github repository file
         uses: actions/checkout@v4
 
-      - name: Test2
+      - name: Test2 | After Checkout
         run: |
           ls
           pwd
 
-      - name: install Node
+      - name: Setup Node.js and pnpm
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
+          cache: 'pnpm'
 
-      - name: install Library
-        run: npm ci
+      - name: Install pnpm
+        run: corepack enable && corepack prepare pnpm@latest --activate
 
-      - name: mk .env
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create .env File
         run: |
-          echo '${{ secrets.ENV }}' > .env
+          printf "%s" "${{ secrets.ENV }}" > .env
 
-      - name: Test3
+      - name: Test3 | Check .env
         run: |
           ls
           cat .env
 
-      - name: testing
-        run: npm test
+      - name: Run Tests
+        run: pnpm test
 
-      - name: Install dependencies
-        run: npm install
+      - name: Build Project
+        run: pnpm build
 
-      - name: Build
-        run: npm build
+      - name: Package Build Files
+        run: tar -czvf project.tar.gz dist .env package.json pnpm-lock.yaml
 
-      - name: compose
-        run: tar -czvf project.tar.gz dist .env package.json package-lock.json
+      # - name: Send tar file to EC2 by SCP
+      #   uses: appleboy/scp-action@v0.1.7
+      #   with:
+      #     host: ${{ secrets.EC2_HOST }}
+      #     username: ${{ secrets.USERNAME }}
+      #     key: ${{ secrets.EC2_PRIVATE_KEY }}
+      #     source: project.tar.gz
+      #     target: /home/ubuntu/netfilx-nest/tobe
 
-      - name: Send tar file to EC2 by SCP
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: project.tar.gz
-          target: /home/ubuntu/netfilx-nest/tobe
-
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          script: |
-            rm -rf /home/ubuntu/netflix-nest/current
-            mkdir /home/ubuntu/netflix-nest/current
-            mv /home/ubuntu/netflix-nest/tobe/project.tar.gz /home/ubunto/netflix-nest/current/project.tar.gz
-            cd /home/ubuntu/netflix-nest/current
-            tar -xvf project.tar.gz
-            npm i
-            pm2 kill
-            pm2 start dist/main.js --name "netflix-nest"
+      # - name: Deploy to EC2
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.EC2_HOST }}
+      #     username: ${{ secrets.USERNAME }}
+      #     key: ${{ secrets.EC2_PRIVATE_KEY }}
+      #     script: |
+      #       rm -rf /home/ubuntu/netflix-nest/current
+      #       mkdir /home/ubuntu/netflix-nest/current
+      #       mv /home/ubuntu/netflix-nest/tobe/project.tar.gz /home/ubunto/netflix-nest/current/project.tar.gz
+      #       cd /home/ubuntu/netflix-nest/current
+      #       tar -xvf project.tar.gz
+      #       pnpm i --prod
+      #       pm2 kill
+      #       pm2 start dist/main.js --name "netflix-nest"
