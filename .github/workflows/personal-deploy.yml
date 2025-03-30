@@ -1,0 +1,63 @@
+name: Personal Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test1
+        run: |
+          ls
+          pwd
+
+      - name: Load Github repository file
+        uses: actions/checkout@v4
+
+      - name: Test2
+        run: |
+          ls
+          pwd
+
+      - name: install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: install Library
+        run: pnpm ci
+
+      - name: mk .env
+        run: |
+          echo '${{ secrets.ENV }}' > .env
+
+      - name: Test3
+        run: |
+          ls
+          cat .env
+
+      - name: testing
+        run: pnpm test
+
+      - name: Connect to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          ENV: ${{ secrets.ENV }}
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          envs: ENV
+          script_stop: true
+          script: |
+            cd /home/ubuntu/netflix-nest
+            rm -rf .env
+            git pull origin main
+            echo "$ENV" > .env
+            npm i
+            npm run build
+            pm2 kill
+            pm2 start dist/main.js --name netflix-nest

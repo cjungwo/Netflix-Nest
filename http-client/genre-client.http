@@ -1,0 +1,24 @@
+### GET genre
+GET {{baseUrl}}/genre
+
+### GET genre/:id
+GET {{baseUrl}}/genre/1
+
+### POST genre
+POST {{baseUrl}}/genre
+content-type: application/json
+
+{
+  "name": "Fantasy"
+}
+
+### PATCH genre/:id
+PATCH {{baseUrl}}/genre/1
+content-type: application/json
+
+{
+  "name": "Drama"
+}
+
+### DELETE genre/:id
+DELETE {{baseUrl}}/genre/1
