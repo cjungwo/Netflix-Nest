@@ -1,0 +1,77 @@
+name: General Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test1
+        run: |
+          ls
+          pwd
+
+      - name: Load Github repository file
+        uses: actions/checkout@v4
+
+      - name: Test2
+        run: |
+          ls
+          pwd
+
+      - name: install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: install Library
+        run: pnpm ci
+
+      - name: mk .env
+        run: |
+          echo '${{ secrets.ENV }}' > .env
+
+      - name: Test3
+        run: |
+          ls
+          cat .env
+
+      - name: testing
+        run: pnpm test
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: compose
+        run: tar -czvf project.tar.gz dist .env package.json package-lock.json
+
+      - name: Send tar file to EC2 by SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: project.tar.gz
+          target: /home/ubuntu/netfilx-nest/tobe
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            rm -rf /home/ubuntu/netflix-nest/current
+            mkdir /home/ubuntu/netflix-nest/current
+            mv /home/ubuntu/netflix-nest/tobe/project.tar.gz /home/ubunto/netflix-nest/current/project.tar.gz
+            cd /home/ubuntu/netflix-nest/current
+            tar -xvf project.tar.gz
+            npm i
+            pm2 kill
+            pm2 start dist/main.js --name "netflix-nest"

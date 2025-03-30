@@ -4,6 +4,7 @@ import { Genre } from 'src/genre/entity/genre.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -26,11 +27,11 @@ export class Movie extends BaseTable {
   @JoinTable()
   genres: Genre[];
 
-  @OneToOne(() => MovieDetail, (movieDetail) => movieDetail.id, {
+  @OneToOne(() => MovieDetail, (movieDetail) => movieDetail.movie, {
     cascade: true,
     nullable: false,
   })
-  @JoinTable()
+  @JoinColumn()
   detail: MovieDetail;
 
   @ManyToOne(() => Director, (director) => director.id, {

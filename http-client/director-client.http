@@ -1,0 +1,26 @@
+### GET director
+GET {{baseUrl}}/director
+
+### GET director/:id
+GET {{baseUrl}}/director/1
+
+### POST director
+POST {{baseUrl}}/director
+content-type: application/json
+
+{
+  "name": "Timothy Kang",
+  "dob": "2003-03-19T00:00:00.000Z",
+  "nationality": "AU"
+}
+
+### PATCH director/:id
+PATCH {{baseUrl}}/director/1
+content-type: application/json
+
+{
+  "name": "Christoper Nolan",
+}
+
+### DELETE director/:id
+DELETE {{baseUrl}}/director/1

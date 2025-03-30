@@ -1,0 +1,27 @@
+### GET movie
+GET {{baseUrl}}/movie
+
+### GET movie/:id
+GET {{baseUrl}}/movie/1
+
+### POST movie
+POST {{baseUrl}}/movie
+content-type: application/json
+
+{
+  "title": "Harry Potter 1",
+  "genreIds": [1, 4],
+  "detail": "Magic World",
+  "directorId": 1
+}
+
+### PATCH movie/:id
+PATCH {{baseUrl}}/movie/1
+content-type: application/json
+
+{
+  "title": "Harry Potter 3"
+}
+
+### DELETE movie/:id
+DELETE {{baseUrl}}/movie/1
