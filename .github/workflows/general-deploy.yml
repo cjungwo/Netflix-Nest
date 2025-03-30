@@ -28,7 +28,7 @@ jobs:
           node-version: '20'
 
       - name: install Library
-        run: pnpm ci
+        run: npm ci
 
       - name: mk .env
         run: |
@@ -40,13 +40,13 @@ jobs:
           cat .env
 
       - name: testing
-        run: pnpm test
+        run: npm test
 
       - name: Install dependencies
-        run: pnpm install
+        run: npm install
 
       - name: Build
-        run: pnpm build
+        run: npm build
 
       - name: compose
         run: tar -czvf project.tar.gz dist .env package.json package-lock.json
