@@ -28,7 +28,7 @@ jobs:
           node-version: '20'
 
       - name: install Library
-        run: pnpm ci
+        run: npm ci
 
       - name: mk .env
         run: |
@@ -40,7 +40,7 @@ jobs:
           cat .env
 
       - name: testing
-        run: pnpm test
+        run: npm test
 
       - name: Connect to EC2
         uses: appleboy/ssh-action@v1.0.3
