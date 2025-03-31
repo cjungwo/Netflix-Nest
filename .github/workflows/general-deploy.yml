@@ -8,8 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Test1 | Before Checkout
+      - name: Test | Before Checkout
         run: |
           ls
           pwd
@@ -17,28 +18,31 @@ jobs:
       - name: Load Github repository file
         uses: actions/checkout@v4
 
-      - name: Test2 | After Checkout
+      - name: Test | After Checkout
         run: |
           ls
           pwd
 
-      - name: Setup Node.js and pnpm
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 10
+          run_install: false
+
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Install pnpm
-        run: corepack enable && corepack prepare pnpm@latest --activate
-
-      - name: Install Dependencies
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Create .env File
         run: |
           printf "%s" "${{ secrets.ENV }}" > .env
 
-      - name: Test3 | Check .env
+      - name: Test | Check .env
         run: |
           ls
           cat .env
