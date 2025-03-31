@@ -1,0 +1,24 @@
+MappedTypes:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Partial:
+      Make whole properties of class to optional
+    Pick:
+      Select properties of class
+    Omit:
+      Remove properties of class
+    Intersection:
+      Combine properties of class
+    Composition:
+      Combine mapped types
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    
+  ☐ Work List: @must @could @should @won't
+    ✔ update-movie-dto @done(25-04-01 09:24)
+    ✔ update-genre-dto @done(25-04-01 09:24)
+    ✔ update-director-dto @done(25-04-01 09:24)
+
+  ☐ Retrospect
+
+  ☐ Additions

@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   ClassSerializerInterceptor,
   Controller,
@@ -28,18 +27,7 @@ export class MovieController {
   }
 
   @Get(':id')
-  getMovie(
-    @Param(
-      'id',
-      new ParseIntPipe({
-        exceptionFactory(error) {
-          throw new BadRequestException('Enter a valid number');
-        },
-      }),
-    )
-    id: number,
-  ) {
-    console.log(typeof id);
+  getMovie(@Param('id', ParseIntPipe) id: number) {
     return this.movieService.findOne(id);
   }
 
