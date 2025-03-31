@@ -9,7 +9,7 @@
     "db:dev:rm": "docker compose rm dev-db -s -f -v",
     "db:dev:up": "docker compose up dev-db -d",
     "db:dev:restart": "pnpm db:dev:rm && pnpm db:dev:up",
-    "prebuild": "rimraf dist",
+    "prebuild": "npx rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"__test__/**/*.ts\"",
     "start": "nest start",
