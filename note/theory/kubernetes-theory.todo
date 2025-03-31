@@ -1,0 +1,21 @@
+Kubernetes:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Learn how to use k8s
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+    ✔ Make docker image @done(25-03-31 12:12)
+    ✔ Create nest-pod.yaml @done(25-03-31 12:12)
+    ☐ Deploy to k8s
+      ☐ kubectl apply -f nest-pod.yaml
+      - kubectl get pods
+      - kubectl port-forward nest-pod 3000:3000
+      - kubectl delete pod nest-pod
+      - kubectl get pods
+      
+    ☐ Test
+
+  ☐ Retrospect
+
+  ☐ Additions
