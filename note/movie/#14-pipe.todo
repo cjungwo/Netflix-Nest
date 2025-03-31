@@ -1,0 +1,37 @@
+Pipe:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Global, Controller, Route, Route Parameter
+
+    Pipes apply to provided argument at controller
+    Works before controller
+    Can be used to validate, transform, or modify data
+
+    Global and Route Parameter are most common
+
+    ValidationPipe -> validate
+    TransformPipe -> transform
+    ParseIntPipe -> validate, transform
+    ParseFloatPipe -> validate, transform
+    ParseBoolPipe -> validate, transform
+    ParseArrayPipe -> validate, transform
+    ParseUUIDPipe -> validate
+    ParseEnumPipe -> validate
+    DefaultValuePipe -> validate
+    ParseFilePipe -> validate / Alter => multer or form-data
+
+    Custom Pipe:
+      - using PipeTransform interface
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    Global, Controller, Route, Route Parameter
+
+  ☐ Work List: @must @could @should @won't
+    ✔ movie controller @done(25-04-01 09:08)
+    ✔ genre controller @done(25-04-01 09:08)
+    ✔ director controller @done(25-04-01 09:08)
+    ☐ custom pipe
+
+  ☐ Retrospect
+
+  ☐ Additions
