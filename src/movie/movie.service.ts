@@ -168,11 +168,11 @@ export class MovieService {
       if (genreIds) {
         const genres = await qr.manager.find(Genre, {
           where: {
-            id: In(dto.genreIds),
+            id: In(genreIds),
           },
         });
 
-        if (genres.length !== dto.genreIds.length) {
+        if (genres.length !== genreIds.length) {
           throw new NotFoundException(
             `This is unexisted IDs of Genre -> ${genres.map((genre) => genre.id).join(',')}`,
           );
