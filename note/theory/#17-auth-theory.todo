@@ -1,0 +1,58 @@
+Auth:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Process:
+      send email, password to server 
+      -> encode password and save to db
+      -> login with email and password
+      -> decode password and compare with db
+      -> generate access token and refresh token
+      -> send tokens to client
+      -> client save tokens to local storage
+      -> client send access token to server for doing authorized actions
+
+    Encode Password:
+      - original password doesn't save anywhere
+      - never(too long time) decode password
+      - compare encoded password and saved password(also encoded)
+    
+    Tools: 
+      - bcrypt
+      - hash password
+    
+    Dictionary Attack
+      - use salt to prevent dictionary attack
+      - use slow algorithm to prevent brute force attack
+    Salt
+      - random string
+      - save to db with encoded password
+      - use to encode password
+
+    Bcrypt (slow and salted)
+      - hash password
+      - compare password
+      - generate salt
+      - generate hash
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    Basic Token:
+      - send user info to server
+
+    Access Token:
+      - send to server for authorized actions
+
+    Refresh Token:
+      - send to server for refresh access token
+
+    JWT:
+      - stateless
+      - small and info about auth
+      - header, payload, signature
+      - iss, exp, sub, aud ...
+      - authentication and authorization
+
+  ☐ Work List: @must @could @should @won't
+
+  ☐ Retrospect
+
+  ☐ Additions
