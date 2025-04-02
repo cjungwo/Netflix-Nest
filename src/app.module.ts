@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
+import { AuthModule } from './auth/auth.module';
 import { DirectorModule } from './director/director.module';
 import { GenreModule } from './genre/genre.module';
 import { MovieModule } from './movie/movie.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { MovieModule } from './movie/movie.module';
         DB_USER: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_DATABASE: Joi.string().required(),
+        HASH_ROUNDS: Joi.number().required(),
       }),
     }),
     TypeOrmModule.forRootAsync({
@@ -36,6 +39,8 @@ import { MovieModule } from './movie/movie.module';
     MovieModule,
     DirectorModule,
     GenreModule,
+    AuthModule,
+    UserModule,
   ],
 })
 export class AppModule {}

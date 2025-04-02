@@ -5,7 +5,10 @@ Signup:
   ☐ Dev Strategy(Tests, Scenarios, Priorities)
 
   ☐ Work List: @must @could @should @won't
-
+    ✔ generate user resource @done(25-04-02 10:36)
+    ✔ generate auth resource @done(25-04-02 10:36)
+    ✔ user service @done(25-04-02 10:36)
+    ✔ auth service - signup @done(25-04-02 11:08)
   ☐ Retrospect
 
   ☐ Additions
