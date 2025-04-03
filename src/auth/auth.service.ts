@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 
@@ -52,14 +52,14 @@ export class AuthService {
       throw new BadRequestException('User already exists');
     }
 
-    const hash = await bcrypt.hash(
+    const hash = bcrypt.hashSync(
       password,
       this.configService.get<number>('HASH_ROUNDS')!,
     );
 
     await this.userRepository.save({
       email,
-      hash,
+      password: hash,
     });
 
     return this.userRepository.findOne({
