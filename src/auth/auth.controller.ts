@@ -17,4 +17,9 @@ export class AuthController {
   signUp(@Headers('authorization') token: string) {
     return this.authService.signUp(token);
   }
+
+  @Post('sign-in')
+  signIn(@Headers('authorization') token: string) {
+    return this.authService.signIn(token);
+  }
 }
