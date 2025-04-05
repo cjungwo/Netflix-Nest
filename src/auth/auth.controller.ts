@@ -28,8 +28,17 @@ export class AuthController {
     return this.authService.signIn(token);
   }
 
+  @Post('token/access')
+  async rotateAccessToken(@Headers('authorization') token: string) {
+    const payload = await this.authService.parseBearerToken(token, true);
+
+    return {
+      accessToken: await this.authService.issuToken(payload, false),
+    };
+  }
+
   @UseGuards(LOCAL_STRATEGY)
-  @Post('login/passport')
+  @Post('sign-in/passport')
   loginUserPassport(@Request() req) {
     return {
       refreshToken: this.authService.issuToken(req.user, true),

@@ -1,9 +1,14 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
-import { User } from 'src/user/entities/user.entity';
+import { envVarKeys } from 'src/common/const/env.const';
+import { Role, User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -22,7 +27,11 @@ export class AuthService {
       throw new BadRequestException('Invalid token');
     }
 
-    const [_, token] = basicSplit;
+    const [basic, token] = basicSplit;
+
+    if (basic.toLowerCase() !== 'basic') {
+      throw new BadRequestException('Invalid token');
+    }
 
     const decodedToken = Buffer.from(token, 'base64').toString('utf-8');
 
@@ -38,6 +47,40 @@ export class AuthService {
       email,
       password,
     };
+  }
+
+  async parseBearerToken(rawToken: string, isRefreshToken: boolean) {
+    const basicSplit = rawToken.split(' ');
+
+    if (basicSplit.length !== 2) {
+      throw new BadRequestException('Invalid token');
+    }
+
+    const [bearer, token] = basicSplit;
+
+    if (bearer.toLowerCase() !== 'bearer') {
+      throw new BadRequestException('Invalid token');
+    }
+
+    try {
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get<string>(envVarKeys.refreshTokenSecret),
+      });
+
+      if (isRefreshToken) {
+        if (payload.type !== 'refresh') {
+          throw new BadRequestException('Enter RefreshToken');
+        }
+      } else {
+        if (payload.type !== 'access') {
+          throw new BadRequestException('Enter AccessToken');
+        }
+      }
+
+      return payload;
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
   }
 
   async authenticate(email: string, password: string) {
@@ -60,12 +103,12 @@ export class AuthService {
     return user;
   }
 
-  async issuToken(user: User, isRefreshToken: boolean) {
+  async issuToken(user: { id: number; role: Role }, isRefreshToken: boolean) {
     const refreshTokenSecret = this.configService.get<string>(
-      'REFRESH_TOKEN_SECRET',
+      envVarKeys.refreshTokenSecret,
     );
     const accessTokenSecret = this.configService.get<string>(
-      'ACCESS_TOKEN_SECRET',
+      envVarKeys.accessTokenSecret,
     );
 
     return this.jwtService.signAsync(
