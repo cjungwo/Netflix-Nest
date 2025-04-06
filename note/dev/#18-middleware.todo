@@ -1,0 +1,18 @@
+Middleware:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    middleware 
+    - modify request and response 
+    - undestroyed
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+    ✔ bearer token middleware class @done(25-04-06 09:51)
+    ✔ apply bearer token middleware in AppModule @done(25-04-06 09:51)
+    ✔ logger middleware function @done(25-04-06 09:56)
+    ✔ apply logger middleware in global @done(25-04-06 10:03)
+
+  ☐ Retrospect
+
+  ☐ Additions
