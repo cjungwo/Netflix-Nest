@@ -1,10 +1,19 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
+import { AuthModule } from './auth/auth.module';
+import { BearerTokenMiddleware } from './auth/middleware/bearer-token.middleware';
+import { envVarKeys } from './common/const/env.const';
 import { DirectorModule } from './director/director.module';
 import { GenreModule } from './genre/genre.module';
 import { MovieModule } from './movie/movie.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -18,17 +27,20 @@ import { MovieModule } from './movie/movie.module';
         DB_USER: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_DATABASE: Joi.string().required(),
+        HASH_ROUNDS: Joi.number().required(),
+        ACCESS_TOKEN_SECRET: Joi.string().required(),
+        REFRESH_TOKEN_SECRET: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get('DB_HOST'),
-        port: configService.get('DB_PORT'),
-        username: configService.get('DB_USER'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_DATABASE'),
+        type: configService.get<string>(envVarKeys.dbType) as 'postgres',
+        host: configService.get<string>(envVarKeys.dbHost),
+        port: configService.get<number>(envVarKeys.dbPort),
+        username: configService.get<string>(envVarKeys.dbUser),
+        password: configService.get<string>(envVarKeys.dbPassword),
+        database: configService.get<string>(envVarKeys.dbDatabase),
         autoLoadEntities: true,
         synchronize: true,
       }),
@@ -36,6 +48,24 @@ import { MovieModule } from './movie/movie.module';
     MovieModule,
     DirectorModule,
     GenreModule,
+    AuthModule,
+    UserModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(BearerTokenMiddleware)
+      .exclude(
+        {
+          path: 'auth/sign-up',
+          method: RequestMethod.POST,
+        },
+        {
+          path: 'auth/sign-in',
+          method: RequestMethod.POST,
+        },
+      )
+      .forRoutes('*');
+  }
+}

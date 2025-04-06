@@ -21,5 +21,6 @@
   "todo.colors.tags.foreground": ["#000000", "#000000", "#000000", "#000000"],
   "todo.tags.names": ["must", "should", "could", "won't"],
   "todo.file.name": "note/TODO",
-  "todo.file.defaultContent": "Task:\n  ☐ All\n  ☐ Analysis Requirements(Statement, Goal ...)\n\n  ☐ Dev Strategy(Tests, Scenarios, Priorities)\n\n  ☐ Work List: @must @could @should @won't\n\n  ☐ Retrospect\n\n  ☐ Additions\n"
+  "todo.file.defaultContent": "Task:\n  ☐ All\n  ☐ Analysis Requirements(Statement, Goal ...)\n\n  ☐ Dev Strategy(Tests, Scenarios, Priorities)\n\n  ☐ Work List: @must @could @should @won't\n\n  ☐ Retrospect\n\n  ☐ Additions\n",
+  "postman.settings.dotenv-detection-notification-visibility": false
 }

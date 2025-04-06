@@ -1,0 +1,22 @@
+Passport:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Passport:
+    - Modulised Auth System
+    - Middleware
+    - Light core
+    - Session & Token
+    - Opensource
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    
+  ☐ Work List: @must @could @should @won't
+    ✔ implement passport @done(25-04-05 11:42)
+    ✔ change strategy name @done(25-04-05 11:44)
+    ✔ change field name (username -> email) @done(25-04-05 11:44)
+    ✔ strategy name to variable @done(25-04-05 11:44)
+    ✔ apply jwt strategy @done(25-04-05 12:02)
+
+  ☐ Retrospect
+
+  ☐ Additions
