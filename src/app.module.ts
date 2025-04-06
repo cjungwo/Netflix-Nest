@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './auth/guard/auth.guard';
 import { BearerTokenMiddleware } from './auth/middleware/bearer-token.middleware';
 import { envVarKeys } from './common/const/env.const';
 import { DirectorModule } from './director/director.module';
@@ -50,6 +51,12 @@ import { UserModule } from './user/user.module';
     GenreModule,
     AuthModule,
     UserModule,
+  ],
+  providers: [
+    {
+      provide: 'APP_GUARD',
+      useClass: AuthGuard,
+    },
   ],
 })
 export class AppModule implements NestModule {
