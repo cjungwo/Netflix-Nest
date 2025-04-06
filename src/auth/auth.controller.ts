@@ -9,6 +9,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { Public } from './decorator/public.decorator';
 import { JWT_STRATEGY } from './strategy/jwt.strategy';
 import { LOCAL_STRATEGY } from './strategy/local.strategy';
 
@@ -17,12 +18,14 @@ import { LOCAL_STRATEGY } from './strategy/local.strategy';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @Post('sign-up')
   /// authorization: Basic $token
   signUp(@Headers('authorization') token: string) {
     return this.authService.signUp(token);
   }
 
+  @Public()
   @Post('sign-in')
   signIn(@Headers('authorization') token: string) {
     return this.authService.signIn(token);
