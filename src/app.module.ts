@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './auth/guard/auth.guard';
+import { RBACGuard } from './auth/guard/rbac.guard';
 import { BearerTokenMiddleware } from './auth/middleware/bearer-token.middleware';
 import { envVarKeys } from './common/const/env.const';
 import { DirectorModule } from './director/director.module';
@@ -56,6 +57,10 @@ import { UserModule } from './user/user.module';
     {
       provide: 'APP_GUARD',
       useClass: AuthGuard,
+    },
+    {
+      provide: 'APP_GUARD',
+      useClass: RBACGuard,
     },
   ],
 })
