@@ -17,23 +17,21 @@ export class GenreService {
   }
 
   findOne(id: number) {
-    return this.genreRepository.findOne({
-      where: {
-        id,
-      },
-    });
+    return this.genreRepository.findOneBy({ id });
   }
 
-  create(dto: CreateGenreDto) {
+  async create(dto: CreateGenreDto) {
+    const genre = await this.genreRepository.findOneBy({ name: dto.name });
+
+    if (genre) {
+      throw new NotFoundException('This is existed Id of Genre');
+    }
+
     return this.genreRepository.save(dto);
   }
 
   async update(id: number, dto: UpdateGenreDto) {
-    const genre = await this.genreRepository.findOne({
-      where: {
-        id,
-      },
-    });
+    const genre = await this.genreRepository.findOneBy({ id });
 
     if (!genre) {
       throw new NotFoundException('This is unexisted Id of Genre');
@@ -48,21 +46,13 @@ export class GenreService {
       },
     );
 
-    const newGenre = await this.genreRepository.findOne({
-      where: {
-        id,
-      },
-    });
+    const newGenre = await this.genreRepository.findOneBy({ id });
 
     return newGenre;
   }
 
   async remove(id: number) {
-    const genre = await this.genreRepository.findOne({
-      where: {
-        id,
-      },
-    });
+    const genre = await this.genreRepository.findOneBy({ id });
 
     if (!genre) {
       throw new NotFoundException('This is unexisted Id of Genre');
