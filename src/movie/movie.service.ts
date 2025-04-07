@@ -96,9 +96,7 @@ export class MovieService {
         .into(Movie)
         .values({
           title: dto.title,
-          detail: {
-            detail: movieDetailId,
-          },
+          detail: movieDetailId,
           director,
         })
         .execute();
@@ -138,7 +136,7 @@ export class MovieService {
         where: {
           id,
         },
-        relations: ['detail', 'genres'],
+        relations: ['detail', 'director', 'genres'],
       });
 
       if (!movie) {

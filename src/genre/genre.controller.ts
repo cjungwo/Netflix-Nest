@@ -10,6 +10,8 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
+import { RBAC } from 'src/auth/decorator/rbac.decorator';
+import { Role } from 'src/user/entities/user.entity';
 import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
 import { GenreService } from './genre.service';
@@ -20,6 +22,7 @@ export class GenreController {
   constructor(private readonly genreService: GenreService) {}
 
   @Post()
+  @RBAC(Role.user)
   create(@Body() createGenreDto: CreateGenreDto) {
     return this.genreService.create(createGenreDto);
   }
@@ -35,6 +38,7 @@ export class GenreController {
   }
 
   @Patch(':id')
+  @RBAC(Role.admin)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateGenreDto: UpdateGenreDto,
@@ -43,6 +47,7 @@ export class GenreController {
   }
 
   @Delete(':id')
+  @RBAC(Role.admin)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.genreService.remove(id);
   }

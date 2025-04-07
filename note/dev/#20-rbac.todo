@@ -1,0 +1,18 @@
+RBAC:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Role Based Access Control
+    Give Permissions, that can be able to work CRUD, based on roles
+  
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    if user is admin, give all permissions
+    if user is paidUser, give watch medias
+    if user is user, give view media list
+
+  ☐ Work List: @must @could @should @won't
+    ✔ add rbac decorator @done(25-04-08 08:15)
+    ✔ add rbac guard @done(25-04-08 08:23)
+    ✔ apply rbac @done(25-04-08 08:25)
+  ☐ Retrospect
+
+  ☐ Additions

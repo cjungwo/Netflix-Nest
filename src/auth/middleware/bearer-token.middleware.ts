@@ -46,7 +46,11 @@ export class BearerTokenMiddleware implements NestMiddleware {
 
       req.user = payload;
       next();
-    } catch (error) {
+    } catch (err) {
+      if (err.name === 'TokenExpiredError') {
+        throw new UnauthorizedException('Token expired');
+      }
+
       next();
     }
   }
