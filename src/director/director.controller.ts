@@ -10,6 +10,8 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
+import { RBAC } from 'src/auth/decorator/rbac.decorator';
+import { Role } from 'src/user/entities/user.entity';
 import { DirectorService } from './director.service';
 import { CreateDirectorDto } from './dto/create-director.dto';
 import { UpdateDirectorDto } from './dto/update-director.dto';
@@ -30,11 +32,13 @@ export class DirectorController {
   }
 
   @Post()
+  @RBAC(Role.user)
   create(@Body() dto: CreateDirectorDto) {
     return this.directorService.create(dto);
   }
 
   @Patch(':id')
+  @RBAC(Role.admin)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateDirectorDto,
@@ -43,6 +47,7 @@ export class DirectorController {
   }
 
   @Delete(':id')
+  @RBAC(Role.admin)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.directorService.remove(id);
   }
