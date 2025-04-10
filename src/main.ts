@@ -10,6 +10,9 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true, // get only defined parameter
       forbidNonWhitelisted: true,
+      transformOptions: {
+        enableImplicitConversion: true, // convert string to number
+      },
     }),
   );
   await app.listen(process.env.PORT ?? 3000);
