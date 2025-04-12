@@ -1,0 +1,35 @@
+Interceptor:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+  Client -> request -> Middlewre -> Guard -> "Interceptor" -> Pipe -> Server(Controller, Service, Repository)
+  Client -> response <- "Interceptor" <- Exception Filter <- Server(Controller, Service, Repository)  
+  
+  Interceptor:
+    - can use at both request and response
+
+    - binding extra logic 
+    - change return value
+    - change thrown error
+    - add extra function to original function
+    - conditionally override the function
+    - repeatedly login can combine
+
+    - use RxJS at response
+  
+  how to:
+    - use @Injectable() decorator
+    - use NestInterceptor interface
+    - implement intercept() method
+    - use next().handle()
+    - .pipe()
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+    ✔ Response time interceptor @done(25-04-13 08:50)
+    ✔ cache interceptor @done(25-04-13 09:00)
+    ✔ transaction interceptor @done(25-04-13 09:14)
+    
+  ☐ Retrospect
+
+  ☐ Additions

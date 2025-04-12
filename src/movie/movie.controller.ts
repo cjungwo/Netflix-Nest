@@ -9,12 +9,14 @@ import {
   Patch,
   Post,
   Query,
+  Request,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { Public } from 'src/auth/decorator/public.decorator';
 import { RBAC } from 'src/auth/decorator/rbac.decorator';
 import { AuthGuard } from 'src/auth/guard/auth.guard';
+import { TransactionInterceptor } from 'src/common/interceptor/transaction.interceptor';
 import { Role } from 'src/user/entities/user.entity';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { GetMoviesDto } from './dto/get-movies.dto';
@@ -28,6 +30,7 @@ export class MovieController {
 
   @Public()
   @Get()
+  // @UseInterceptors(CacheInterceptor)
   getMovies(@Query() dto: GetMoviesDto) {
     return this.movieService.findAll(dto);
   }
@@ -41,17 +44,20 @@ export class MovieController {
   @Post()
   @UseGuards(AuthGuard)
   @RBAC(Role.user)
-  postMovie(@Body() body: CreateMovieDto) {
-    return this.movieService.create(body);
+  @UseInterceptors(TransactionInterceptor)
+  postMovie(@Body() body: CreateMovieDto, @Request() req: any) {
+    return this.movieService.create(body, req.queryRunner);
   }
 
   @Patch(':id')
   @RBAC(Role.admin)
+  @UseInterceptors(TransactionInterceptor)
   patchMovie(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: UpdateMovieDto,
+    @Request() req: any,
   ) {
-    return this.movieService.update(id, body);
+    return this.movieService.update(id, body, req.queryRunner);
   }
 
   @Delete(':id')

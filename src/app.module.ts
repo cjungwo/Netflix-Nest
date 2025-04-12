@@ -12,6 +12,7 @@ import { AuthGuard } from './auth/guard/auth.guard';
 import { RBACGuard } from './auth/guard/rbac.guard';
 import { BearerTokenMiddleware } from './auth/middleware/bearer-token.middleware';
 import { envVarKeys } from './common/const/env.const';
+import { ResponseTimeInterceptor } from './common/interceptor/response-time.interceptor';
 import { DirectorModule } from './director/director.module';
 import { GenreModule } from './genre/genre.module';
 import { MovieModule } from './movie/movie.module';
@@ -61,6 +62,10 @@ import { UserModule } from './user/user.module';
     {
       provide: 'APP_GUARD',
       useClass: RBACGuard,
+    },
+    {
+      provide: 'APP_INTERCEPTOR',
+      useClass: ResponseTimeInterceptor,
     },
   ],
 })
