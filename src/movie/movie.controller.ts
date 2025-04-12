@@ -45,7 +45,7 @@ export class MovieController {
   @UseGuards(AuthGuard)
   @RBAC(Role.user)
   @UseInterceptors(TransactionInterceptor)
-  postMovie(@Body() body: CreateMovieDto, @Request() req) {
+  postMovie(@Body() body: CreateMovieDto, @Request() req: any) {
     return this.movieService.create(body, req.queryRunner);
   }
 
@@ -55,7 +55,7 @@ export class MovieController {
   patchMovie(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: UpdateMovieDto,
-    @Request() req,
+    @Request() req: any,
   ) {
     return this.movieService.update(id, body, req.queryRunner);
   }
