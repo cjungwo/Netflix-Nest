@@ -11,7 +11,7 @@ async function bootstrap() {
       whitelist: true, // get only defined parameter
       forbidNonWhitelisted: true,
       transformOptions: {
-        enableImplicitConversion: true, // convert string to number
+        enableImplicitConversion: true, // convert types like string to number
       },
     }),
   );
