@@ -1,0 +1,35 @@
+Pagination:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    split a lot of data into small pieces 
+    - split data
+    - navigation control
+    - constant size
+    - staying status
+    - optimise performance
+
+    Page Based Pagination:
+      page number
+    - problem
+      - data insert -> if new data is inserted between skip data, then new data cannot be shown, and last loaded data is duplicated.
+      - data delete -> if data is deleted between skip data, then first data of next page is skipped.
+
+    Cursor Based Pagination:
+      last loaded item id
+    - advantage
+      - data insert -> if new data is inserted between skip data, then last loaded data is not duplicated.
+      - data delete -> if data is deleted between skip data, then first data of next page is not skipped.
+    - problem
+      - implementation is complex than page based pagination
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    - page based pagination
+    - cursor based pagination
+  ☐ Work List: @must @could @should @won't
+    ✔ impl page based pagination @done(25-04-10 14:04)
+    ✔ enableImplicitConversion: true in transformOptions @done(25-04-12 23:37)
+    ✔ impl cursor based pagination @done(25-04-13 00:52)
+    
+  ☐ Retrospect
+
+  ☐ Additions
