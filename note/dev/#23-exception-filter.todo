@@ -1,0 +1,16 @@
+ExceptionFilter:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    ExceptionFilter:
+      - manage exception for client friendly
+      - error catch and handle
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+    ✔ forbidden exception filter @done(25-04-13 10:02)
+    ✔ query failed exception filter @done(25-04-13 10:02)
+
+  ☐ Retrospect
+
+  ☐ Additions
