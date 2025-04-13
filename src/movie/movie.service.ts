@@ -143,11 +143,7 @@ export class MovieService {
     let newDirector;
 
     if (directorId) {
-      const director = await qr.manager.findOne(Director, {
-        where: {
-          id: directorId,
-        },
-      });
+      const director = await qr.manager.findOneBy(Director, { id: directorId });
 
       if (!director) {
         throw new NotFoundException('This is unexisted ID of Director');
@@ -159,11 +155,7 @@ export class MovieService {
     let newGenres;
 
     if (genreIds) {
-      const genres = await qr.manager.find(Genre, {
-        where: {
-          id: In(genreIds),
-        },
-      });
+      const genres = await qr.manager.findBy(Genre, { id: In(genreIds) });
 
       if (genres.length !== genreIds.length) {
         throw new NotFoundException(

@@ -12,6 +12,8 @@ import { AuthGuard } from './auth/guard/auth.guard';
 import { RBACGuard } from './auth/guard/rbac.guard';
 import { BearerTokenMiddleware } from './auth/middleware/bearer-token.middleware';
 import { envVarKeys } from './common/const/env.const';
+import { ForbiddenExceptionFilter } from './common/filter/forbidden.filter';
+import { QueryFailedExceptionFilter } from './common/filter/query-failed.filter';
 import { ResponseTimeInterceptor } from './common/interceptor/response-time.interceptor';
 import { DirectorModule } from './director/director.module';
 import { GenreModule } from './genre/genre.module';
@@ -66,6 +68,14 @@ import { UserModule } from './user/user.module';
     {
       provide: 'APP_INTERCEPTOR',
       useClass: ResponseTimeInterceptor,
+    },
+    {
+      provide: 'APP_FILTER',
+      useClass: ForbiddenExceptionFilter,
+    },
+    {
+      provide: 'APP_FILTER',
+      useClass: QueryFailedExceptionFilter,
     },
   ],
 })
