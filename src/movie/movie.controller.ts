@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   ClassSerializerInterceptor,
   Controller,
@@ -48,16 +49,33 @@ export class MovieController {
   @RBAC(Role.user)
   @UseInterceptors(TransactionInterceptor)
   @UseInterceptors(
-    FileFieldsInterceptor([
+    FileFieldsInterceptor(
+      [
+        {
+          name: 'movie',
+          maxCount: 1,
+        },
+        {
+          name: 'posters',
+          maxCount: 2,
+        },
+      ],
       {
-        name: 'movie',
-        maxCount: 1,
+        limits: {
+          fileSize: 20000000,
+        },
+        fileFilter(req, file, callback) {
+          if (file.mimetype === 'video/mp4') {
+            return callback(
+              new BadRequestException('Only MP4 file accepted'),
+              false,
+            );
+          }
+
+          return callback(null, true);
+        },
       },
-      {
-        name: 'posters',
-        maxCount: 2,
-      },
-    ]),
+    ),
   )
   postMovie(
     @Body() body: CreateMovieDto,
