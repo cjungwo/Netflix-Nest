@@ -22,6 +22,17 @@ import { MovieService } from './movie.service';
         /// process.cwd() + '\public\movie' -> windows
         /// => join(process.cwd(), 'public', 'movie')
         destination: join(process.cwd(), 'public', 'movie'),
+        // filename: (req, file, cb) => {
+        //   const split = file.originalname.split('.');
+
+        //   let extension = 'mp4';
+
+        //   if (split.length > 1) {
+        //     extension = split[split.length - 1];
+        //   }
+
+        //   cb(null, `${v4()}_${Date.now()}.${extension}`);
+        // },
       }),
     }),
   ],
