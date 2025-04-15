@@ -25,7 +25,6 @@ import { CreateMovieDto } from './dto/create-movie.dto';
 import { GetMoviesDto } from './dto/get-movies.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { MovieService } from './movie.service';
-import { MovieFilePipe } from './pipe/movie-file.pipe';
 
 @Controller('movie')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -69,15 +68,9 @@ export class MovieController {
   postMovie(
     @Body() body: CreateMovieDto,
     @Request() req: any,
-    @UploadedFile(
-      new MovieFilePipe({
-        maxSize: 20,
-        mimetype: 'mp4',
-      }),
-    )
-    movie: Express.Multer.File,
+    @UploadedFile() movie: Express.Multer.File,
   ) {
-    return this.movieService.create(body, req.queryRunner);
+    return this.movieService.create(body, movie.filename, req.queryRunner);
   }
 
   @Patch(':id')
