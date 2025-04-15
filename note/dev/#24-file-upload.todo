@@ -1,0 +1,45 @@
+File Upload:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Tranditional File Upload Problem:
+      - latency -> physical distance
+      - file size -> large file
+
+    File Upload:
+      - apply optimistic response at frontend
+      
+      - use preupload
+        : preupload file to server
+        -> server save file to temp location
+        -> send unique file id to client
+        -> client upload final files id to server
+        -> server save file to final location
+        -> server delete temp file
+      
+      - presigned url
+        : client request presigned url to server
+        -> server request presined url to s3
+        -> server send presigned url to client
+        -> client upload final files
+        -> server save file to s3
+    
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    - Multer
+    
+  ☐ Work List: @must @could @should @won't
+    ☐ Tranditional file upload
+      ✔ single @done(25-04-13 10:40)
+      ✔ multi @done(25-04-14 13:07)
+      ✔ filefieldsinterceptor @done(25-04-14 13:07)
+      ✔ MulterOptions - fileSize of limits @done(25-04-15 10:43)
+      ✔ update info of uploaded file @done(25-04-15 11:02)
+      ✔ reflect info of file at entity @done(25-04-15 11:08)
+      ✔ serve static file @done(25-04-15 11:19)
+
+    ☐ Presigned on local
+      ✔ Move file upload logic to CommonModule @done(25-04-15 11:32)
+      ✔ complete movie end point @done(25-04-15 11:41)
+
+  ☐ Retrospect
+
+  ☐ Additions

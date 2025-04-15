@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { rename } from 'fs/promises';
 import { join } from 'path';
 import { CommonService } from 'src/common/common.service';
 import { Director } from 'src/director/entity/director.entity';
@@ -66,7 +67,7 @@ export class MovieService {
     return movie;
   }
 
-  async create(dto: CreateMovieDto, movieFileName: string, qr: QueryRunner) {
+  async create(dto: CreateMovieDto, qr: QueryRunner) {
     const director = await qr.manager.findOne(Director, {
       where: {
         id: dto.directorId,
@@ -101,6 +102,12 @@ export class MovieService {
     const movieDetailId = movieDetail.identifiers[0].id;
 
     const movieFolder = join('public', 'movie');
+    const tempFolder = join('public', 'temp');
+
+    await rename(
+      join(process.cwd(), tempFolder, dto.movieFileName),
+      join(process.cwd(), movieFolder, dto.movieFileName),
+    );
 
     const movie = await qr.manager
       .createQueryBuilder()
@@ -110,7 +117,7 @@ export class MovieService {
         title: dto.title,
         detail: movieDetailId,
         director,
-        movieFilePath: join(movieFolder, movieFileName),
+        movieFilePath: join(movieFolder, dto.movieFileName),
       })
       .execute();
 

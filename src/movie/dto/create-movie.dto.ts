@@ -2,6 +2,7 @@ import { Type } from 'class-transformer';
 import {
   ArrayNotEmpty,
   IsArray,
+  IsInt,
   IsNotEmpty,
   IsNumber,
   IsString,
@@ -28,5 +29,10 @@ export class CreateMovieDto {
   detail: string;
 
   @IsNotEmpty()
+  @IsInt()
   directorId: number;
+
+  @IsNotEmpty()
+  @IsString()
+  movieFileName: string;
 }

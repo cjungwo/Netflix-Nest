@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import { BaseTable } from 'src/common/entity/base-table.entity';
 import { Director } from 'src/director/entity/director.entity';
 import { Genre } from 'src/genre/entity/genre.entity';
@@ -40,6 +41,9 @@ export class Movie extends BaseTable {
   detail: MovieDetail;
 
   @Column()
+  @Transform(({ value }) => {
+    `http://localhost:3000/${value}`;
+  })
   movieFilePath: string;
 
   @ManyToOne(() => Director, (director) => director.id, {
