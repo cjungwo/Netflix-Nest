@@ -1,0 +1,13 @@
+Custom Decorator:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+    ✔ use param decorator @done(25-04-16 10:53)
+      ✔ user id decorator to find movie creator info @done(25-04-16 10:53)
+      ✔ query runner decorator to find query runner object @done(25-04-16 10:53)
+  ☐ Retrospect
+
+  ☐ Additions

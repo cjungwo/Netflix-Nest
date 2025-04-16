@@ -2,6 +2,7 @@ import { Transform } from 'class-transformer';
 import { BaseTable } from 'src/common/entity/base-table.entity';
 import { Director } from 'src/director/entity/director.entity';
 import { Genre } from 'src/genre/entity/genre.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   Entity,
@@ -18,6 +19,9 @@ import { MovieDetail } from './movie-detail.entity';
 export class Movie extends BaseTable {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @ManyToOne(() => User, (user) => user.createdMovies)
+  creator: User;
 
   @Column({
     unique: true,
