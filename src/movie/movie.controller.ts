@@ -9,15 +9,17 @@ import {
   Patch,
   Post,
   Query,
-  Request,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { Public } from 'src/auth/decorator/public.decorator';
 import { RBAC } from 'src/auth/decorator/rbac.decorator';
 import { AuthGuard } from 'src/auth/guard/auth.guard';
+import { QueryRunner } from 'src/common/decorator/query-runner.decorator';
 import { TransactionInterceptor } from 'src/common/interceptor/transaction.interceptor';
+import { UserId } from 'src/user/decorator/user-id.decorator';
 import { Role } from 'src/user/entities/user.entity';
+import { QueryRunner as QR } from 'typeorm';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { GetMoviesDto } from './dto/get-movies.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
@@ -45,8 +47,12 @@ export class MovieController {
   @UseGuards(AuthGuard)
   @RBAC(Role.user)
   @UseInterceptors(TransactionInterceptor)
-  postMovie(@Body() body: CreateMovieDto, @Request() req: any) {
-    return this.movieService.create(body, req.queryRunner);
+  postMovie(
+    @Body() body: CreateMovieDto,
+    @QueryRunner() qr: QR,
+    @UserId() userId: number,
+  ) {
+    return this.movieService.create(body, userId, qr);
   }
 
   @Patch(':id')
@@ -55,9 +61,9 @@ export class MovieController {
   patchMovie(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: UpdateMovieDto,
-    @Request() req: any,
+    @QueryRunner() qr: QR,
   ) {
-    return this.movieService.update(id, body, req.queryRunner);
+    return this.movieService.update(id, body, qr);
   }
 
   @Delete(':id')
