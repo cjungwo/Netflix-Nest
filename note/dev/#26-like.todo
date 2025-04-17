@@ -1,0 +1,24 @@
+Like System:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Like System
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    Example:
+    - [Like] [Dislike]
+    - if do nothing, both false
+    - if Like btn click, Like btn true
+    - if Like btn click again, Like btn false
+    - if Dislike btn click, Dislike btn true
+    - if Dislike btn click again, Dislike btn false
+    - if Like btn click then Dislike btn click, Like btn true then Like btn false and Dislike btn true
+
+  ☐ Work List: @must @could @should @won't
+    ✔ MovieUserLike entity @done(25-04-16 15:49)
+      ✔ middle table, composite primary key -> @PrimaryColumn() @done(25-04-16 15:49)
+    ✔ createMovieLike & createMoiveDisLike controller @done(25-04-16 16:03)
+    ✔ toggleMovieLike Service @done(25-04-16 16:03)
+    ✔ query MovieUserLike Service @done(25-04-17 10:43)
+
+  ☐ Retrospect
+
+  ☐ Additions
