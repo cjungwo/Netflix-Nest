@@ -1,4 +1,5 @@
 import {
+  Body,
   ClassSerializerInterceptor,
   Controller,
   Get,
@@ -10,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from './decorator/public.decorator';
+import { RBAC } from './decorator/rbac.decorator';
 import { JWT_STRATEGY } from './strategy/jwt.strategy';
 import { LOCAL_STRATEGY } from './strategy/local.strategy';
 
@@ -29,6 +31,12 @@ export class AuthController {
   @Post('sign-in')
   signIn(@Headers('authorization') token: string) {
     return this.authService.signIn(token);
+  }
+
+  @RBAC()
+  @Post('token/block')
+  blockToken(@Body('token') token: string) {
+    return this.authService.blockToken(token);
   }
 
   @Post('token/access')

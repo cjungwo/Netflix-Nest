@@ -1,3 +1,4 @@
+import { CacheModule } from '@nestjs/cache-manager';
 import {
   MiddlewareConsumer,
   Module,
@@ -17,6 +18,7 @@ import { envVarKeys } from './common/const/env.const';
 import { ForbiddenExceptionFilter } from './common/filter/forbidden.filter';
 import { QueryFailedExceptionFilter } from './common/filter/query-failed.filter';
 import { ResponseTimeInterceptor } from './common/interceptor/response-time.interceptor';
+import { ThrottleInterceptor } from './common/interceptor/throttle.interceptor';
 import { DirectorModule } from './director/director.module';
 import { GenreModule } from './genre/genre.module';
 import { MovieModule } from './movie/movie.module';
@@ -56,6 +58,9 @@ import { UserModule } from './user/user.module';
       rootPath: join(process.cwd(), 'public'), // accessable root path
       serveRoot: '/public/', // prefix of serve root
     }),
+    CacheModule.register({
+      isGlobal: true,
+    }),
     MovieModule,
     DirectorModule,
     GenreModule,
@@ -74,6 +79,10 @@ import { UserModule } from './user/user.module';
     {
       provide: 'APP_INTERCEPTOR',
       useClass: ResponseTimeInterceptor,
+    },
+    {
+      provide: 'APP_INTERCEPTOR',
+      useClass: ThrottleInterceptor,
     },
     {
       provide: 'APP_FILTER',

@@ -1,0 +1,41 @@
+Cache:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Caching:
+      client => server => cache -> db
+
+      shared memory, when server scaling
+
+      ex:
+        - ranking system
+        - user session data
+        - less changed data 
+        - third party api
+        - rate limiting, throttling
+        
+      pros:
+        improve prefermance
+        scalability
+        reduce cost
+        improve UX
+      
+      cons:
+        stale data (is not latest data)
+        increse memory usage
+        complexity design
+        increase security risk
+
+    Redis:
+      Monolithic -> vertical scaling => high cost, overuse
+      horizontal scaling => split memory
+      Micro Service
+    
+      Shared memory => Redis (In-memory Database)
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+
+  ☐ Retrospect
+
+  ☐ Additions

@@ -1,4 +1,9 @@
 import {
+  CacheKey,
+  CacheTTL,
+  CacheInterceptor as CI,
+} from '@nestjs/cache-manager';
+import {
   Body,
   ClassSerializerInterceptor,
   Controller,
@@ -16,6 +21,8 @@ import { Public } from 'src/auth/decorator/public.decorator';
 import { RBAC } from 'src/auth/decorator/rbac.decorator';
 import { AuthGuard } from 'src/auth/guard/auth.guard';
 import { QueryRunner } from 'src/common/decorator/query-runner.decorator';
+import { Throttle } from 'src/common/decorator/throttle.decorator';
+import { CacheInterceptor } from 'src/common/interceptor/cache.interceptor';
 import { TransactionInterceptor } from 'src/common/interceptor/transaction.interceptor';
 import { UserId } from 'src/user/decorator/user-id.decorator';
 import { Role } from 'src/user/entities/user.entity';
@@ -32,9 +39,22 @@ export class MovieController {
 
   @Public()
   @Get()
-  // @UseInterceptors(CacheInterceptor)
+  @Throttle({
+    count: 5,
+    unit: 'minute',
+  })
+  @UseInterceptors(CacheInterceptor)
   getMovies(@Query() dto: GetMoviesDto, @UserId() userId: number) {
     return this.movieService.findAll(dto, userId);
+  }
+
+  @Public()
+  @Get('recent')
+  @UseInterceptors(CI) // url base caching -> /movie/recent (o), /movie/recent?xx=xx (x)
+  @CacheKey('getRecentMovies') // key base caching  -> /movie/recent (o), /movie/recent?xx=xx (o)
+  @CacheTTL(3000) // ttl set at controller
+  getRecentMovies() {
+    return this.movieService.findRecent();
   }
 
   @Public()

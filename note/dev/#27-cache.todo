@@ -1,0 +1,16 @@
+Cache:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+    ✔ get recent movies @done(25-04-17 11:57)
+    ✔ cacheInterceptor @done(25-04-17 12:12)
+    ✔ bearer-token cache in middleware @done(25-04-17 12:12)
+    ✔ block token @done(25-04-17 12:25)
+    ✔ throttle @done(25-04-17 12:41)
+  ☐ Retrospect
+    - cacheModule is on appModule and is Global
+    - ttl set up is very important
+  ☐ Additions
