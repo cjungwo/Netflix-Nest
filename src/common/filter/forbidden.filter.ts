@@ -14,13 +14,13 @@ export class ForbiddenExceptionFilter implements ExceptionFilter {
 
     const status = exception.getStatus();
 
-    console.log(`[UnauthorizedException] ${req.method} ${req.path}`);
+    console.log(`[ForbiddenException] ${req.method} ${req.path}`);
 
     res.status(status).json({
       statusCode: status,
       timestamp: new Date().toISOString(),
       path: req.url,
-      message: 'Unauthorized',
+      message: 'ForbiddenException',
     });
   }
 }
