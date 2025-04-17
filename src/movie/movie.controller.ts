@@ -33,8 +33,8 @@ export class MovieController {
   @Public()
   @Get()
   // @UseInterceptors(CacheInterceptor)
-  getMovies(@Query() dto: GetMoviesDto) {
-    return this.movieService.findAll(dto);
+  getMovies(@Query() dto: GetMoviesDto, @UserId() userId: number) {
+    return this.movieService.findAll(dto, userId);
   }
 
   @Public()
@@ -70,5 +70,21 @@ export class MovieController {
   @RBAC(Role.admin)
   deleteMovie(@Param('id', ParseIntPipe) id: number) {
     return this.movieService.remove(id);
+  }
+
+  @Post(':id/like')
+  createMovieLike(
+    @Param('id', ParseIntPipe) movieId: number,
+    @UserId() userId: number,
+  ) {
+    return this.movieService.toggleMovieLike(movieId, userId, true);
+  }
+
+  @Post(':id/dislike')
+  createMovieDislike(
+    @Param('id', ParseIntPipe) movieId: number,
+    @UserId() userId: number,
+  ) {
+    return this.movieService.toggleMovieLike(movieId, userId, false);
   }
 }
