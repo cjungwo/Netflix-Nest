@@ -1,0 +1,45 @@
+Task Scheduling:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    When operate jobs periodically:
+    - send recommendation movie list to mailing list periodically
+    - update specific data like total like count or total view count periodically
+    - organise file or data periodically
+    - product data analysis report periodically
+    - back up database periodically
+
+    Cron:
+
+      * * * * * *
+      - - - - - -
+      | | | | | |
+      | | | | |  + ---- day of week (0 - 7) - because there are some countries start of week is sunday or start of week is monday
+      | | | | + ------- month (1 - 12)
+      | | | + --------- day (1 - 31)
+      | | + ----------- hour (0 - 23)
+      | + ------------- minute (0 - 59)
+      + --------------- second (0 - 59)
+
+      "*" : every
+      "," : several
+      "-" : range
+      "/" : multiple ex) "minute" */15 -> every 15 min
+      
+
+      Example Cron:
+        - every 0 sec (run once a min) - 0 * * * * *
+        - every exactly midnight - 0 0 0 * * *
+        - 3h 0min 30sec on every sunday - 30 0 3 * * 0 or 30 0 3 * * 7
+        - every mon, wed, fri - 0 0 0 * * 1,3,5
+        - every 5min 0sec - 0 */5 * * * *
+        - every 2h between 8h to 20h - 0 0 8-20/2 * * *
+        - every 1sec - * * * * * *
+        - every 30sec - */30 * * * * *
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+
+  ☐ Retrospect
+
+  ☐ Additions
