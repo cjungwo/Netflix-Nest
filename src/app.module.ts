@@ -6,6 +6,7 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
@@ -61,6 +62,7 @@ import { UserModule } from './user/user.module';
     CacheModule.register({
       isGlobal: true,
     }),
+    ScheduleModule.forRoot(),
     MovieModule,
     DirectorModule,
     GenreModule,
