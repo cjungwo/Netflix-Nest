@@ -1,0 +1,19 @@
+Logger:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Logger Level:
+      - fatal: error never happen
+      - error: error with program execution
+      - warn: error without program execution
+      - log: info log
+      - debug: dev mode log
+      - verbose
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+    ✔ logger @done(25-04-18 19:51)
+    ✔ winston @done(25-04-18 19:51)
+  ☐ Retrospect
+
+  ☐ Additions
