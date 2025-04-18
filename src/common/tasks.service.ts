@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Cron, SchedulerRegistry } from '@nestjs/schedule';
+import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { readdir, unlink } from 'fs/promises';
 import { join, parse } from 'path';
@@ -78,14 +78,14 @@ export class TasksService {
     );
   }
 
-  @Cron('* * * * * *', {
-    name: 'printer',
-  })
+  // @Cron('* * * * * *', {
+  //   name: 'printer',
+  // })
   printer() {
     console.log('[DEBUG] printer run');
   }
 
-  @Cron('*/10 * * * * *')
+  // @Cron('*/10 * * * * *')
   stopper() {
     console.log('[DEBUG] stopper run');
 
