@@ -1,0 +1,33 @@
+Task Scheduling:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+
+    EX:
+      @Cron('* * * * * *', {
+        name: '',
+        timeZone: '',
+      })
+      handleCron()
+
+    SchedulerRegistry:
+      stop()
+      start()
+      setTime(time: CronTime)
+      lastDate()
+      nextDate()
+      nextDates(count: number)
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+    1. download @nestjs/schedule package
+    2. add schedule module in appmodule
+    3. add cron anotation
+
+  ☐ Work List: @must @could @should @won't
+    ✔ test @done(25-04-18 12:13)
+    ✔ remove temp files @done(25-04-18 12:13)
+    ✔ total like count @done(25-04-18 12:23)
+    ✔ schedulerRegistry @done(25-04-18 12:33)
+
+  ☐ Retrospect
+
+  ☐ Additions
