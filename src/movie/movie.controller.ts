@@ -48,7 +48,7 @@ export class MovieControllerV2 {
 
 @Controller({
   path: 'movie',
-  version: VERSION_NEUTRAL, //
+  version: VERSION_NEUTRAL, // Can control every version except specific version of other controllers
 })
 @UseInterceptors(ClassSerializerInterceptor)
 export class MovieController {
