@@ -36,18 +36,6 @@ import { MovieService } from './movie.service';
 
 @Controller({
   path: 'movie',
-  version: '2',
-})
-export class MovieControllerV2 {
-  @Public()
-  @Get()
-  getMovies() {
-    return ['1', '2'];
-  }
-}
-
-@Controller({
-  path: 'movie',
   version: VERSION_NEUTRAL, // Can control every version except specific version of other controllers
 })
 @UseInterceptors(ClassSerializerInterceptor)
