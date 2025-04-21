@@ -17,6 +17,7 @@ import {
   UseGuards,
   UseInterceptors,
   Version,
+  VERSION_NEUTRAL,
 } from '@nestjs/common';
 import { Public } from 'src/auth/decorator/public.decorator';
 import { RBAC } from 'src/auth/decorator/rbac.decorator';
@@ -47,7 +48,7 @@ export class MovieControllerV2 {
 
 @Controller({
   path: 'movie',
-  version: '1',
+  version: VERSION_NEUTRAL, //
 })
 @UseInterceptors(ClassSerializerInterceptor)
 export class MovieController {
