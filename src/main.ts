@@ -10,8 +10,8 @@ async function bootstrap() {
   });
   // app.setGlobalPrefix('v1');
   app.enableVersioning({
-    type: VersioningType.HEADER,
-    header: 'X-API-Version',
+    type: VersioningType.MEDIA_TYPE,
+    key: 'v=',
   });
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   app.use(logger);
