@@ -1,5 +1,5 @@
 import { Inject, Injectable, LoggerService } from '@nestjs/common';
-import { Cron, SchedulerRegistry } from '@nestjs/schedule';
+import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { readdir, unlink } from 'fs/promises';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
@@ -20,7 +20,7 @@ export class TasksService {
     private readonly logger: LoggerService,
   ) {}
 
-  @Cron('*/10 * * * * *')
+  // @Cron('*/10 * * * * *')
   logEverySecond() {
     // this.logger.fatal('FATAL LEVEL LOG'); // error never happen
     this.logger.error('ERROR LEVEL LOG', null, TasksService.name); // error with program execution

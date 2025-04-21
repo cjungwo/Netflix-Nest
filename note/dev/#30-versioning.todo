@@ -1,0 +1,23 @@
+Versioning:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    uri versioning:
+      ex) /v1/movie
+    header versioning:
+      ex) version: 1
+    media type versioning:
+      ex) application/json;v=2
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+    ✔ uri versioning @done(25-04-18 20:22)
+      ✔ default versioning @done(25-04-18 20:15)
+      ✔ movie controller versioning @done(25-04-18 20:17)
+      ✔ movie method versioning @done(25-04-18 20:17)
+    ✔ header versioning @done(25-04-22 09:27)
+    ✔ media type versioning @done(25-04-22 09:27)
+    ✔ version neutarl @done(25-04-22 09:27)
+
+  ☐ Retrospect
+
+  ☐ Additions
