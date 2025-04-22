@@ -16,9 +16,14 @@ import {
   Query,
   UseGuards,
   UseInterceptors,
-  Version,
   VERSION_NEUTRAL,
 } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Public } from 'src/auth/decorator/public.decorator';
 import { RBAC } from 'src/auth/decorator/rbac.decorator';
 import { AuthGuard } from 'src/auth/guard/auth.guard';
@@ -36,20 +41,10 @@ import { MovieService } from './movie.service';
 
 @Controller({
   path: 'movie',
-  version: '2',
-})
-export class MovieControllerV2 {
-  @Public()
-  @Get()
-  getMovies() {
-    return ['1', '2'];
-  }
-}
-
-@Controller({
-  path: 'movie',
   version: VERSION_NEUTRAL, // Can control every version except specific version of other controllers
 })
+@ApiBearerAuth()
+@ApiTags('Movie API')
 @UseInterceptors(ClassSerializerInterceptor)
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
@@ -60,8 +55,18 @@ export class MovieController {
     count: 5,
     unit: 'minute',
   })
-  @Version('5')
   @UseInterceptors(CacheInterceptor)
+  @ApiOperation({
+    description: '[Movie] Pagination Movie List',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Success',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Fail',
+  })
   getMovies(@Query() dto: GetMoviesDto, @UserId() userId: number) {
     return this.movieService.findAll(dto, userId);
   }
@@ -83,7 +88,7 @@ export class MovieController {
 
   @Post()
   @UseGuards(AuthGuard)
-  @RBAC(Role.user)
+  @RBAC(Role.admin)
   @UseInterceptors(TransactionInterceptor)
   postMovie(
     @Body() body: CreateMovieDto,

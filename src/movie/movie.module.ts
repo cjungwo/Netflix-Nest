@@ -7,7 +7,7 @@ import { User } from 'src/user/entities/user.entity';
 import { MovieDetail } from './entity/movie-detail.entity';
 import { MovieUserLike } from './entity/movie-user-like.entity';
 import { Movie } from './entity/movie.entity';
-import { MovieController, MovieControllerV2 } from './movie.controller';
+import { MovieController } from './movie.controller';
 import { MovieService } from './movie.service';
 
 @Module({
@@ -22,7 +22,7 @@ import { MovieService } from './movie.service';
     ]),
     CommonModule,
   ],
-  controllers: [MovieController, MovieControllerV2],
+  controllers: [MovieController],
   providers: [MovieService],
 })
 export class MovieModule {}

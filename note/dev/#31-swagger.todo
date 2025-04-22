@@ -1,0 +1,35 @@
+Swagger:
+  ☐ All
+  ☐ Analysis Requirements(Statement, Goal ...)
+    Swagger:
+      Documentation 
+
+      ApiProperty:
+      - description
+      - example: if try out in swagger, this example input as a default value
+
+      ApiTags:
+      - name of api group
+
+      ApiOperation:
+      - description: describes api
+
+      ApiResponse:
+      - status: provide status code to describe
+      - description: describes response of status
+
+      ApiHideProperty:
+      - hide property that is not required for api communication 
+
+  ☐ Dev Strategy(Tests, Scenarios, Priorities)
+
+  ☐ Work List: @must @could @should @won't
+    ✔ base setup @done(25-04-22 09:40)
+    ✔ auth setup and apply rbac @done(25-04-22 10:06)
+    ✔ api poperty setup @done(25-04-22 10:43)
+    ✔ api operation setup @done(25-04-22 10:53)
+    ✔ api hide property @done(25-04-22 10:59)
+
+  ☐ Retrospect
+
+  ☐ Additions

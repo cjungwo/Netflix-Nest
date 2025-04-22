@@ -183,7 +183,9 @@ export class MovieService {
         creator: {
           id: userId,
         },
-        movieFilePath: join(movieFolder, dto.movieFileName),
+        movieFilePath: dto.movieFileName
+          ? join(movieFolder, dto.movieFileName!)
+          : '',
       })
       .execute();
 
@@ -195,10 +197,12 @@ export class MovieService {
       .of(movieId)
       .add(genres.map((genre) => genre.id));
 
-    await rename(
-      join(process.cwd(), tempFolder, dto.movieFileName),
-      join(process.cwd(), movieFolder, dto.movieFileName),
-    );
+    if (dto.movieFileName) {
+      await rename(
+        join(process.cwd(), tempFolder, dto.movieFileName!),
+        join(process.cwd(), movieFolder, dto.movieFileName!),
+      );
+    }
 
     return await qr.manager.findOne(Movie, {
       where: {
