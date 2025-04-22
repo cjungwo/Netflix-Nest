@@ -3,44 +3,49 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
-  Headers,
   Post,
   Request,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiBasicAuth, ApiBearerAuth } from '@nestjs/swagger';
+import { Role } from 'src/user/entities/user.entity';
 import { AuthService } from './auth.service';
+import { Authorization } from './decorator/authorization.decorator';
 import { Public } from './decorator/public.decorator';
 import { RBAC } from './decorator/rbac.decorator';
 import { JWT_STRATEGY } from './strategy/jwt.strategy';
 import { LOCAL_STRATEGY } from './strategy/local.strategy';
 
 @Controller('auth')
+@ApiBearerAuth()
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Public()
+  @ApiBasicAuth()
   @Post('sign-up')
   /// authorization: Basic $token
-  signUp(@Headers('authorization') token: string) {
+  signUp(@Authorization() token: string) {
     return this.authService.signUp(token);
   }
 
   @Public()
+  @ApiBasicAuth()
   @Post('sign-in')
-  signIn(@Headers('authorization') token: string) {
+  signIn(@Authorization() token: string) {
     return this.authService.signIn(token);
   }
 
-  @RBAC()
+  @RBAC(Role.admin)
   @Post('token/block')
   blockToken(@Body('token') token: string) {
     return this.authService.blockToken(token);
   }
 
   @Post('token/access')
-  async rotateAccessToken(@Headers('authorization') token: string) {
+  async rotateAccessToken(@Authorization() token: string) {
     const payload = await this.authService.parseBearerToken(token, true);
 
     return {
